@@ -1,22 +1,27 @@
-%% HW 01 - State Variable Systems
+%% HW 02 - Nonlinear Systems Simulation 
 %% Document Information:
 % * Author: Bardia Mojra 
-% * Date: 09/07/2021 
-% * Title: HW 01 - State Variable Systems
+% * Date: 09/14/2021 
+% * Title: HW 02 - Nonlinear Systems Simulation 
 % * Term: Fall 2021
 % * Class: EE 5323 - Nonlinear Systems 
 % * Dr. Lewis
 
 
-%% HW 01 - State Variable Systems:
-% # Van der Pol Oscillator
+%% HW 01 - Nonlinear Systems Simulation:
+% # Duffing's Equation
 % # Lozenz Attractor Chaotic System
 % # Voltera Predator-Prey System
  
 
 %% Van der Pol Oscillator:
-% * $$ y"+ \alpha (y^2 -1)y'+y =0 $$ .
-% * Use $$ y(0)=0.1, y'(0)=0.2 $$ as initial conditions. 
+% Duffing’s equation is interesting in that it exhibits bifurcation, or 
+% dependence of stability properties and number of equilibrium points on 
+% a parameter. The undamped Duffing equation is
+% * $$ \dd{x} + \alpha x + x^3 = 0 $$ .
+% a.0)=0.2 $$ as initial conditions. 
+% # ITEM1
+% # ITEM2
 % * Plot $$ y(t) vs. t $$ .
 % * Plot the phase plane plot $$ y'(t) $$ vs. $$ y(t) $$ .
 
