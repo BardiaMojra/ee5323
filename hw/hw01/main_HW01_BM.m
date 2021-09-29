@@ -20,8 +20,6 @@
 % a parameter. The undamped Duffing equation is
 % * $$ \dd{x} + \alpha x + x^3 = 0 $$ .
 % a.0)=0.2 $$ as initial conditions. 
-% # ITEM1
-% # ITEM2
 % * Plot $$ y(t) vs. t $$ .
 % * Plot the phase plane plot $$ y'(t) $$ vs. $$ y(t) $$ .
 
