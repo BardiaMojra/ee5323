@@ -1,18 +1,16 @@
-%% HW 03 - Nonlinear Systems Simulation 
-%% Document Information
-% * Author: Bardia Mojra 
-% * Date: 09/28/2021 
-% * Title: HW 03 - Nonlinear Systems Simulation 
-% * Term: Fall 2021
-% * Class: EE 5323 - Nonlinear Systems 
-% * Dr. Lewis
+%% HW03 - Q01 - Voltera Predator-Prey System
+% @author: Bardia Mojra
+% @date: 09/28/2021
+% @title HW03 - Q01 - Voltera Predator-Prey System
+% @class ee5323 - Nonlinear Systems
+% @professor - Dr. Frank Lewis
 
 %% Voltera Predator-Prey System
 % Consider the Voltera predator-prey system
-% 
+%
 % * $$ \dot{x}_1 = - x_1 + x_1 x_2 $$
 % * $$ \dot{x}_2 = x_2 -  x_1 x_2 $$
-% 
+%
 % # Find the equilibrium points and their nature.
 %
 
@@ -50,9 +48,8 @@ axis([-5 5 -5 5]);
 grid on;
 
 %%
-% 
+%
 %   function xdot = Voltera(t,x)
 %     xdot = [-x(1)+x(1)*x(2); x(2)-x(1)*x(2)];
 %   end
-% 
-
+%

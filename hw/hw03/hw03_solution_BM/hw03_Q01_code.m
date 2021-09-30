@@ -1,7 +1,9 @@
-%% HW 03 - Nonlinear Systems Simulation
-% Author: Bardia Mojra
-% Date: 09/28/2021
-% Title: HW 03 - Nonlinear Systems Simulation
+%% HW03 - Q01 - Voltera Predator-Prey System
+% @author: Bardia Mojra
+% @date: 09/28/2021
+% @title HW03 - Q01 - Voltera Predator-Prey System
+% @class ee5323 - Nonlinear Systems
+% @professor - Dr. Frank Lewis
 
 clc
 close all
@@ -10,7 +12,7 @@ warning
 
 x0_set = -2:.5:2;
 t_intv= [0 100];
-x_0= [4.5, 9.7]'; %'initial conditions for x(t)
+x_0= [4.5, 9.7]'; % initial conditions for x(t)
 
 figure
 [t,x]= ode23('Voltera', t_intv, x_0);
@@ -22,6 +24,7 @@ ylabel('x');
 xlabel('t (sec)');
 legend('Predator', 'Prey');
 t_intv= [0 10];
+
 figure
 for i=x0_set
   for j=x0_set
@@ -40,3 +43,4 @@ grid on;
 function xdot = Voltera(t,x)
   xdot = [-x(1)+x(1)*x(2); x(2)-x(1)*x(2)];
 end
+
