@@ -5,15 +5,6 @@
 % @class ee5323 - Nonlinear Systems
 % @professor - Dr. Frank Lewis
 
-%% Voltera Predator-Prey System
-% Consider the Voltera predator-prey system
-%
-% * $$ \dot{x}_1 = - x_1 + x_1 x_2 $$
-% * $$ \dot{x}_2 = x_2 -  x_1 x_2 $$
-%
-% # Find the equilibrium points and their nature.
-%
-
 clc
 close all
 warning('off','all')
