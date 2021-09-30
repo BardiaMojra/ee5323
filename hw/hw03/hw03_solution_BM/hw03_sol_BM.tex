@@ -29,23 +29,23 @@ Dr. Lewis
 \noindent
 \textbf{Voltera Predator-Prey System} \\
 Consider the Voltera predator-prey system,\\
-$$
+\begin{equation}
 \dot{x}_1 = - x_1 + x_1 x_2
-$$
-$$
+\end{equation}
+\begin{equation}
 \dot{x}_2 = x_2 -  x_1 x_2
-$$
+\end{equation}
 Find the equilibrium points and their nature.\\
 
 \noindent
 \textbf{Answer} \\
 State variable is given as:
-$$
+\begin{equation}
 ~\dot{x}_1 = - x_1 + x_1 x_2
-$$
-$$
+\end{equation}
+\begin{equation}
 ~\dot{x}_2 = x_2 -  x_1 x_2
-$$
+\end{equation}
 
 The Voltera predator-prey system has limit cycles therefore the system is
 at equilibrium when the population of both predator and prey remain
@@ -53,17 +53,18 @@ constant; thus, the derivative should be zero.
 To find the equilibrium, I set $\dot{x}_{1}=0$ and $\dot{x}_{2}=0$.
 Solve the system for its roots.\\
 
-$$
+\begin{equation}
 ~\dot{x}_1 = 0 \Rightarrow 0 =  - x_1 + x_1 x_2
-$$
-$$
+\end{equation}
+\begin{equation}
 ~\dot{x}_2 = 0 \Rightarrow 0 = x_2 -  x_1 x_2
-$$
-$$
+\end{equation}
+\begin{equation}
 ~0 = x_1 (\beta x_2 - \alpha)~\Rightarrow~x_1 = 0 ; ~x_2 = \alpha/\beta
-$$
-$$~0 = x_2 (\gamma - \sigma x_1)~\Rightarrow~x_1 = \gamma/\sigma ; ~x_2 = 0
-$$
+\end{equation}
+\begin{equation}
+  ~0 = x_2 (\gamma - \sigma x_1)~\Rightarrow~x_1 = \gamma/\sigma ; ~x_2 = 0
+\end{equation}
 
 There are two equilibrium points at $(x_1,~x_2)$,
 
@@ -113,12 +114,12 @@ infinity).
 \noindent
 \textbf{Equilibrium points and linearization} \\
 Consider the following system,\\
-$$
+\begin{equation}
 \dot{x}_1 = x_2 (-x_1 + x_2 -1)
-$$
-$$
+\end{equation}
+\begin{equation}
 \dot{x}_2 = x_1 (x_1 + x_2 + 1)
-$$
+\end{equation}
 
 \begin{enumerate}[label=(\alph*)]
 \item Find all equilibrium points
@@ -158,6 +159,15 @@ the obtained characteristic equation.
 %     \dot{x_2}\\
 %   \end{bmatrix}
 % \end{equation}
+
+\begin{equation}
+\dot{x}_1 = x_2 (-x_1 + x_2 -1) = -x_1*x_2 + x_2^2 - x_2
+\end{equation}
+\begin{equation}
+\dot{x}_2 = x_1 (x_1 + x_2 + 1) ~~= ~~ x_1^2 + x_1*x_2 + x_1
+\end{equation}
+
+
 \begin{equation} %\label{eq:2}
   \dot{X} = 0 \Rightarrow~~ \dot{X} = AX \Rightarrow~~ \dot{X} = A
   \begin{bmatrix}
@@ -166,9 +176,13 @@ the obtained characteristic equation.
   \end{bmatrix}
   =
   \begin{bmatrix}
+    -x_2 & x_2 - 1 \\
+    x_1 +1 & x_1
+  \end{bmatrix}_{2x2}
+  \begin{bmatrix}
     x_1\\
     x_2\\
-  \end{bmatrix}
+  \end{bmatrix}_{2x1}
 \end{equation}
 \begin{equation}
   \begin{cases}
