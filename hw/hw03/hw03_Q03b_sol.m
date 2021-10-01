@@ -1,4 +1,4 @@
-%% HW03 - Q02 - System
+%% HW03 - Q03b - System
 % @author: Bardia Mojra
 % @date: 09/28/2021
 % @title HW03 - Q02 - System
@@ -10,8 +10,8 @@ close all
 %warning('off','all')
 %warning
 
-x0_set = -2:.5:2;
-t_intv= [0 100];
+x0_set = -3:.5:3;
+t_intv= [0 25];
 x_0= [-4.5; -9.7]; % initial conditions for x(t)
 %t = t_intv;
 
@@ -24,7 +24,7 @@ title('Q02 System - Time Plot');
 xlabel('t (sec)');
 legend('dx_1', 'dx_2');
 
-t_intv= [0 10];
+t_intv= [0 25];
 figure
 for i=x0_set
   for j=x0_set
@@ -42,4 +42,6 @@ grid on;
 
 %%
 %
-
+% function xdot = System(t,x)    
+%   xdot = [-x(2); x(1)];
+% end
