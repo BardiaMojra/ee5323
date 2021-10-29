@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1635483226 "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.tex" "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.pdf" "hw05_report_BardiaMojra" 1635483232
+["pdflatex"] 1635540743 "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.tex" "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.pdf" "hw05_report_BardiaMojra" 1635540744
   "/etc/texmf/web2c/texmf.cnf" 1624080877 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.aux" 1635483226 1360 4c41657a6a21926ab187f3e959b9f6a8 ""
-  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.tex" 1635482905 7735 e35e186af0c9f6a82d8c44eb5d535cd0 ""
+  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.aux" 1635540743 1360 4c41657a6a21926ab187f3e959b9f6a8 ""
+  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.tex" 1635540743 7934 183aa6deed58547d5e43d126e484471e ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_75t36g.enc" 1576624121 3082 8861b1e297d25d9ec5a4dc78c8789a9b ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_nufysp.enc" 1576624121 3080 4edbb1580edf76c6e59b4255bd0e6342 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/libertinus-type1/lbts_oeoa22.enc" 1576624121 3400 2a427c991a8ac0371465b2a23cdb879a ""
@@ -141,9 +141,9 @@
   "homeworg.cls" 1635467893 6928 e3488c30ee1d4182df41d9cdb951359e ""
   "hw05_q03_code.m" 1635483218 1532 26fffed5724d7b3aaee6ca6c3ee7bf76 ""
   "hw05_q04_code.m" 1635483226 1473 4f4b12e6ff07c363b65323de64252a84 ""
-  "hw05_report_BardiaMojra.aux" 1635483226 1360 4c41657a6a21926ab187f3e959b9f6a8 "pdflatex"
-  "hw05_report_BardiaMojra.out" 1635483226 184 6502a56116a86a665828d9972a51ca07 "pdflatex"
-  "hw05_report_BardiaMojra.tex" 1635482905 7735 e35e186af0c9f6a82d8c44eb5d535cd0 ""
+  "hw05_report_BardiaMojra.aux" 1635540743 1360 4c41657a6a21926ab187f3e959b9f6a8 "pdflatex"
+  "hw05_report_BardiaMojra.out" 1635540743 184 6502a56116a86a665828d9972a51ca07 "pdflatex"
+  "hw05_report_BardiaMojra.tex" 1635540743 7934 183aa6deed58547d5e43d126e484471e ""
   "images/fig01.png" 1635480691 11705 fae1be5662fdc7cd5600d81ac93e014d ""
   "images/fig02.png" 1635481612 16316 4c22780e234f7bb806f3ec7d49ba1aad ""
   "images/fig03.png" 1635481625 38024 33f83184b970d04fdd7ddfd35bc4bd17 ""
@@ -151,9 +151,9 @@
   "images/fig05.png" 1635482705 15350 7e1059931ab63299c8eac057239c4c79 ""
   "images/fig06.png" 1635482717 25137 449a47f4d587183ddaabd7c9fd43a52e ""
   (generated)
+  "hw05_report_BardiaMojra.log"
+  "hw05_report_BardiaMojra.aux"
+  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.pdf"
+  "hw05_report_BardiaMojra.out"
   "hw05_report_BardiaMojra.pdf"
   "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.log"
-  "/home/smerx/git/ee5323/hw/hw05/report/hw05_report_BardiaMojra.pdf"
-  "hw05_report_BardiaMojra.aux"
-  "hw05_report_BardiaMojra.log"
-  "hw05_report_BardiaMojra.out"

@@ -9,8 +9,13 @@
 \usepackage{graphicx}
 \graphicspath{{./images/}}
 \usepackage{wrapfig}
+% --------------- HCANCEL COMMAND -----------------------------
 \newcommand\hcancel[2][black]{\setbox0=\hbox{$#2$}%
 \rlap{\raisebox{.45\ht0}{\textcolor{#1}{\rule{\wd0}{1pt}}}}#2}
+
+% --------------- TRANSPOSE COMMAND -----------------------------
+\newcommand{\transpose}[1]{\ensuremath{#1^{\scriptscriptstyle T}}}
+
 
 \begin{document}
 
