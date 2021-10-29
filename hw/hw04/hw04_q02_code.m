@@ -11,7 +11,7 @@ close all
 warning('off','all')
 warning
 
-% part b
+% part 3
 t_intv= [0 20];
 x_0= [0.1, 0]'; % initial conditions for x(t)
 figure
