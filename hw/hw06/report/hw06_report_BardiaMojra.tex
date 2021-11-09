@@ -66,14 +66,90 @@ We used a quadratic Lyapunov Function to show this system is locally SISL.
 And we found the region within which \(\dot{V} \leq 0\).
 Use LaSalle’s extension to verify that the system is AS. Find the
 equilibrium point.\\
-
 \noindent
 \textbf{Answer} \\
+4.a) Lyapunov function candidate: \( V(x_1, x_2) = \frac{1}{2} (x_1^2 + x_2^2) > 0\)
+\begin{equation*}
+\dot{V} = \frac{\partial V^\top}{\partial x} \dot{x} =
+\begin{bmatrix}
+\frac{\partial V}{\partial x_1} & \frac{\partial V}{\partial x_2}
+\end{bmatrix}
+\begin{bmatrix}
+\dot{x}_1 \\
+\dot{x}_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+  x_1 & x_2
+  \end{bmatrix}
+  \begin{bmatrix}
+  \dot{x}_1 \\
+  \dot{x}_2
+  \end{bmatrix}
+  \Rightarrow
+\end{equation*}
+\begin{equation*}
+\dot{V} =
+  x_1 \dot{x}_1 + x_2 \dot{x}_2
+\end{equation*}
+Now we plug in system dynamics to check stability,
+\begin{equation*}
+  \dot{V} = x_1 (x_2 + x_1 (x_1^2 -2)) + x_2(-x_1) \Rightarrow
+\end{equation*}
+\begin{equation*}
+  \dot{V} = \hcancel[red]{x_1 x_2} - x_1^2(x_1^2 -2) - \hcancel[red]{x_1 x_2}
+\end{equation*}
+\begin{equation*}
+  \dot{V} = - x_1^2(x_1^2 -2) \leq 0
+\end{equation*}
+Thus, the system is \emph{asymptotically stable} (AS) and it is bound by a region
+with radius of \(\sqrt{2}\). Moreover, we know \(\dot{x} \rightarrow 0\); thus,
+per LaSalle’s extension, \(\ddot{x} \rightarrow 0\) must hold true (not used in
+system dynamics). We proceed with plugging in the resulting \(x_1\) in the
+system dynamics equation.
+\begin{equation*}
+  \dot{V} = - x_1^2(x_1^2 -2) \leq 0 \Rightarrow \dot{V} \rightarrow 0,~x_1~|~x_{1}^{2} - 2 = 0; \Rightarrow x_1 = \pm sqrt{2}
+\end{equation*}
+\begin{equation*}
+  \begin{cases}
+    \dot{x}_1 = x_2 + x_1 (x_1^2 -2 )\\
+    \dot{x}_2 = -x_1\\
+  \end{cases}
+\end{equation*}
+
+
+
+
+
+4.b) Simulation:
+\begin{figure}[h]
+  \includegraphics[width=.6\textwidth]{fig01.png}
+  \centering
+\end{figure}
+\begin{figure}[h]
+  \includegraphics[width=.6\textwidth]{fig02.png}
+  \centering
+\end{figure}
+\begin{figure}[h]
+  \includegraphics[width=.6\textwidth]{fig03.png}
+  \centering
+\end{figure}
+
+\newpage
+\newpage
+\newpage
+
+\noindent
+\textbf{Matlab Code}
+\lstinputlisting{../q01_main.m}
+\lstinputlisting{../q01_sys.m}
+
+
 
 
 \exercise
 \noindent
-\textbf{LaSalle's Extension}\\
+\textbf{Limit Cycles}\\
 Consider the following system,
 \begin{equation*}
   \begin{cases}
