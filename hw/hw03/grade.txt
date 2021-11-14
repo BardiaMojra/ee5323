@@ -1,0 +1,5 @@
+82
+
+p1 (-6) poles are not right for (3, 0) and (-3, 0).
+p2 (-6) poles are not right for (1, -1) and (-1, -1).
+p2 (-5) poles are not right in p3c.

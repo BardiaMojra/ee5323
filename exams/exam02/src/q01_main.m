@@ -1,9 +1,9 @@
-%% exam02 - q01 - lyapunov qnalysis 
-% @author Bardia Mojra
-% @date 11/13/2021
-% @title  exam02 - q01 - lyapunov qnalysis 
+%% HW05 - Q04 - AS
+% @author: Bardia Mojra
+% @date: 10/28/2021
+% @title HW05 - Q04 - SISL Simulation
 % @class ee5323 - Nonlinear Systems
-% @professor Dr. Frank Lewis
+% @professor - Dr. Frank Lewis
 
 clc
 clear
@@ -63,4 +63,10 @@ legend('Orbits','Interpreter','latex');
 title('System Trajectories - Phase Plane','Interpreter','latex');
 grid on;
 axis([-50 50 -50 50])
+
+%%
+% 
+% function xdot = q04_sys(t,x)
+%   xdot = [x(2) + x(1)*(x(1)^2-2); -x(1)]; 
+% end
 
