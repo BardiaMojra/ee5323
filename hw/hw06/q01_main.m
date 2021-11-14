@@ -1,7 +1,7 @@
 %% exam02 - q01 - lyapunov qnalysis 
 % @author Bardia Mojra
 % @date 11/13/2021
-% @title  exam02 - q01 - lyapunov qnalysis 
+% @title  exam02 - q01 - lyapunov analysis 
 % @class ee5323 - Nonlinear Systems
 % @professor Dr. Frank Lewis
 
@@ -52,7 +52,7 @@ figure
 for i=mesh
   for j=mesh
     init=[i, j];
-    [t, x] = ode23(@q04_sys, [0 10], init);
+    [t, x] = ode23(@q01_sys, [0 10], init);
     plot(x(:,1),x(:,2))
     hold on;
   end
