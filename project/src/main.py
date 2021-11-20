@@ -99,7 +99,8 @@ def main():
   plt.xlabel('time')
   plt.xlim(sys.time[0],sys.time[-1])
 
-
+  # set animation codec
+  plt.rcParam['animation.html'] = 'html5'
 
   return # end of main
 
