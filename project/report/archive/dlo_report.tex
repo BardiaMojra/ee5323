@@ -1,0 +1,173 @@
+\documentclass[journal,twoside,web]{ieeecolor}
+\usepackage{generic}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\graphicspath{{./images/}}
+\usepackage{wrapfig}
+\setlength{\parskip}{.35em}
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\markboth{\journalname, VOL. XX, NO. XX, XXXX 2017}
+
+
+% {Author \MakeLowercase{\textit{et al.}}: Preparation of Papers for IEEE TRANSACTIONS and JOURNALS (February 2017)}
+
+% ref eq with \eqref{eq}
+
+
+
+\title{State Dynamics and Shape Deformity Estimation and Tracking of Elastic Rods}
+
+\author{Bardia Mojra\\}
+
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+% \thanks{This paragraph of the first footnote will contain the date on
+% which you submitted your paper for review. It will also contain support
+% information, including sponsor and financial support acknowledgment. For
+% example, ``This work was supported in part by the U.S. Department of
+% Commerce under Grant BS123456.'' }
+% \thanks{The next few paragraphs should contain
+% the authors' current affiliations, including current address and e-mail. For
+% example, F. A. Author is with the National Institute of Standards and
+% Technology, Boulder, CO 80305 USA (e-mail: author@boulder.nist.gov). }
+% \thanks{S. B. Author, Jr., was with Rice University, Houston, TX 77005 USA. He is
+% now with the Department of Physics, Colorado State University, Fort Collins,
+% CO 80523 USA (e-mail: author@lamar.colostate.edu).}
+% \thanks{T. C. Author is with
+% the Electrical Engineering Department, University of Colorado, Boulder, CO
+% 80309 USA, on leave from the National Research Institute for Metals,
+% Tsukuba, Japan (e-mail: author@nrim.go.jp).}}
+
+\begin{abstract}
+
+
+\end{abstract}
+
+% \begin{IEEEkeywords}
+% Enter key words or phrases in alphabetical
+% order, separated by commas. For a list of suggested keywords, send a blank
+% e-mail to keywords@ieee.org or visit \underline
+% {http://www.ieee.org/organizations/pubs/ani\_prod/keywrd98.txt}
+% \end{IEEEkeywords}
+
+\section{Introduction}
+\label{sec:introduction}
+This is intro
+
+
+
+
+
+
+\section{Conclusion}
+A conclusion section
+
+
+% \smallskip\noindent
+% \begin{small}
+% \begin{tabular}{l}
+% \verb+\+\texttt{documentclass[journal,twoside,web]\{ieeecolor\}}\\
+% \verb+\+\texttt{usepackage\{\textit{Journal\_Name}\}}
+% \end{tabular}
+% \end{small}
+
+% \begin{figure}[!t]
+% \centerline{\includegraphics[width=\columnwidth]{fig1.png}}
+% \caption{Magnetization as a function of applied field.
+% It is good practice to explain the significance of the figure in the caption.}
+% \label{fig1}
+% \end{figure}
+
+
+
+% \begin{table}
+% \caption{Units for Magnetic Properties}
+% \label{table}
+% \setlength{\tabcolsep}{3pt}
+% \begin{tabular}{|p{25pt}|p{75pt}|p{115pt}|}
+% \hline
+% Symbol&
+% Quantity&
+% Conversion from Gaussian and \par CGS EMU to SI $^{\mathrm{a}}$ \\
+% \hline
+% $\Phi $&
+% magnetic flux&
+% 1 Mx $\to  10^{-8}$ Wb $= 10^{-8}$ V$\cdot $s \\
+% $B$&
+% magnetic flux density, \par magnetic induction&
+% 1 G $\to  10^{-4}$ T $= 10^{-4}$ Wb/m$^{2}$ \\
+% $H$&
+% magnetic field strength&
+% 1 Oe $\to  10^{3}/(4\pi )$ A/m \\
+% $m$&
+% magnetic moment&
+% 1 erg/G $=$ 1 emu \par $\to 10^{-3}$ A$\cdot $m$^{2} = 10^{-3}$ J/T \\
+% $M$&
+% magnetization&
+% 1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 10^{3}$ A/m \\
+% 4$\pi M$&
+% magnetization&
+% 1 G $\to  10^{3}/(4\pi )$ A/m \\
+% $\sigma $&
+% specific magnetization&
+% 1 erg/(G$\cdot $g) $=$ 1 emu/g $\to $ 1 A$\cdot $m$^{2}$/kg \\
+% $j$&
+% magnetic dipole \par moment&
+% 1 erg/G $=$ 1 emu \par $\to 4\pi \times  10^{-10}$ Wb$\cdot $m \\
+% $J$&
+% magnetic polarization&
+% 1 erg/(G$\cdot $cm$^{3}) =$ 1 emu/cm$^{3}$ \par $\to 4\pi \times  10^{-4}$ T \\
+% $\chi , \kappa $&
+% susceptibility&
+% 1 $\to  4\pi $ \\
+% $\chi_{\rho }$&
+% mass susceptibility&
+% 1 cm$^{3}$/g $\to  4\pi \times  10^{-3}$ m$^{3}$/kg \\
+% $\mu $&
+% permeability&
+% 1 $\to  4\pi \times  10^{-7}$ H/m \par $= 4\pi \times  10^{-7}$ Wb/(A$\cdot $m) \\
+% $\mu_{r}$&
+% relative permeability&
+% $\mu \to \mu_{r}$ \\
+% $w, W$&
+% energy density&
+% 1 erg/cm$^{3} \to  10^{-1}$ J/m$^{3}$ \\
+% $N, D$&
+% demagnetizing factor&
+% 1 $\to  1/(4\pi )$ \\
+% \hline
+% \multicolumn{3}{p{251pt}}{Vertical lines are optional in tables. Statements that serve as captions for
+% the entire table do not need footnote letters. }\\
+% \multicolumn{3}{p{251pt}}{$^{\mathrm{a}}$Gaussian units are the same as cg emu for magnetostatics; Mx
+% $=$ maxwell, G $=$ gauss, Oe $=$ oersted; Wb $=$ weber, V $=$ volt, s $=$
+% second, T $=$ tesla, m $=$ meter, A $=$ ampere, J $=$ joule, kg $=$
+% kilogram, H $=$ henry.}
+% \end{tabular}
+% \label{tab1}
+% \end{table}
+
+
+
+
+% \newpage
+% -------------------------------------------------------------
+%% citation generator
+% https://www.bibme.org/ieee-transactions-on-robotics
+\newpage
+\bibliography{ref}
+\bibliographystyle{ieeecolor}
+% -------------------------------------------------------------
+\end{document}
