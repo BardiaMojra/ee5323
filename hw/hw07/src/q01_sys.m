@@ -8,7 +8,7 @@
 % * Dr. Lewis
 
 function xdot = q01_sys(t,x)
-  u = -x(1)*x(2)^2;
+  u = -x(1)*x(2);
   xdot = [  x(2)*sin(x(1)); 
-            x(1)*x(2)^2]; 
+            x(1)*x(2) + u]; 
 end
