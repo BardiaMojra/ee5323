@@ -2,6 +2,7 @@
 \usepackage{cite}
 \usepackage[pdftex]{graphicx}
 \graphicspath{{./images/}}
+
 % *** MATH PACKAGES ***
 \usepackage[cmex10]{amsmath}
 % *** SPECIALIZED LIST PACKAGES ***
@@ -11,6 +12,15 @@
 %\usepackage{mdwmath}
 %\usepackage{mdwtab}
 %\usepackage{eqparbox}
+% *** TIKZ ***
+% Required packages and libraries
+\usepackage {tikz}
+\usetikzlibrary {patterns}
+\usepackage{tkz-euclide}
+% \usetkzobj{all}
+
+
+% \usepackage{tikzpicture} %preamble
 % *** SUBFIGURE PACKAGES ***
 %\usepackage[tight,footnotesize]{subfigure}
 %\usepackage[caption=false]{caption}
@@ -38,30 +48,31 @@
 
 \begin{abstract}
 %\boldmath
-Manipulation of deformable linear objects (DLO's) or Kirchhoff's elastic rods
-(not the same)
-has
-brought much-needed attention to a category of open problems in robotics.
-DLO is described as an elastic rod with relatively small diameter and large
-length. These objects deform along store energy  bend and twist depending  problem can be reframed to describe a wide range of
-problems with applications in automotive wiring harness manufacturing, surgical
-suturing, agriculture, and construction, to name a few. DLOs are a subset of
-all deformable objects but they are the simplest to model and analyze (compare to
-2D and 3D deformable objects).
-Existing literature on the topic include various model-based, model-free, and
-hybrid approaches, where they tackle this problem at different levels.
-This research problem can be divided into smaller and more intuitive problems such
-as perception, state dynamic and shape deformity estimation, tracking and control,
-path planning, as well as obstacle and self-collision avoidance.
-In this article, I focus on modeling shape deformity and state dynamics of
-a DLO with both ends are held in a static configuration, forming a closed-loop
-geometric feedback control loop. I start by briefly reviewing relative work.
-Then, I provide a mathematical framework for modeling DLO curvature and torsion.
-Next, I present a simulation code where various configurations and motions are
-synthesized. The following section presents my effort to estimate and track
-object deformity and dynamics. Next, I present test cases and a quantified
-analysis of the tracker. Lastly, I discuss shortcomings, open questions and
-future steps.
+% Manipulation of deformable linear objects (DLO's) or Kirchhoff's elastic rods
+% (not the same)
+% has
+% brought much-needed attention to a category of open problems in robotics.
+% DLO is described as an elastic rod with relatively small diameter and large
+% length. These objects deform along store energy  bend and twist depending  problem can be reframed to describe a wide range of
+% problems with applications in automotive wiring harness manufacturing, surgical
+% suturing, agriculture, and construction, to name a few. DLOs are a subset of
+% all deformable objects but they are the simplest to model and analyze (compare to
+% 2D and 3D deformable objects).
+% Existing literature on the topic include various model-based, model-free, and
+% hybrid approaches, where they tackle this problem at different levels.
+% This research problem can be divided into smaller and more intuitive problems such
+% as perception, state dynamic and shape deformity estimation, tracking and control,
+% path planning, as well as obstacle and self-collision avoidance.
+% In this article, I focus on modeling shape deformity and state dynamics of
+% a DLO with both ends are held in a static configuration, forming a closed-loop
+% geometric feedback control loop. I start by briefly reviewing relative work.
+% Then, I provide a mathematical framework for modeling DLO curvature and torsion.
+% Next, I present a simulation code where various configurations and motions are
+% synthesized. The following section presents my effort to estimate and track
+% object deformity and dynamics. Next, I present test cases and a quantified
+% analysis of the tracker. Lastly, I discuss shortcomings, open questions and
+% future steps.
+This is abstract
 \end{abstract}
 
 % \IEEEpeerreviewmaketitle
@@ -72,50 +83,216 @@ This is the intro\\
 
 
 
-cus on the gaps, the simulation exists, the dynamical models also exist, so I will focus on "minimal space representation" by forcing certain "constraints" such as "unit segment" estimation, and perception. Unity is a state of the art simulation software (game engine) with physics engine support and native ROS interface/API and there is also a DLO manipulation library that I need to look into.
-
 
 % keep this at the bottom of the page
-\hfill {\today}\\
-\hfill
+% \hfill {\today}\\
+% \hfill
 
 
 
 
-\section{Related Work}
-This is the intro\\
+\subsection{Related Work}
+This is related \\
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+\subsection{Objectives}
+The objective of this article is to present a concise, intuitive and transferable
+the solution to a classical optimal control problem.
+Our objective is to model the plant using Lagrange's equations of motion,
+derive state dynamics, obtain a generalized cost function, and to optimally
+control the double pendulum by reaching a stable configuration in the upright
+position while given minim-energy control input to the system.\\
+Also --- testing\\
+Also ---\\
 
-% https://www.youtube.com/watch?v=SZdZeT93C1s
-% https://www.youtube.com/watch?v=ENNyltVTJaE
-% https://www.youtube.com/results?search_query=double+pendulum+state+estimation+python
-
-\section{Double Pendulum}
-This is the intro\\
-
-\subsection{System Model}
-Subsection text here.
-
-\subsection{State Space Representation}
-
-\subsection{}
+\subsection{Article Structure}
 
 
-\section{Double Pendulum}
 
+\section{Estimation Formulation}
+There are many benefits to using the \emph{state space} framework, notably that
+is well generalized and conveniently implemented on modern computers.
 
+\subsection{System Setup}
+Consider a resting cart on a flat rigid surface along the x-axis, on top of
+which are stacked two inverted pendulums, figure 01. The pendulums resemble a
+robotic arm but rather without a motor or external torque input. At the end of
+each pendulum is assumed to be a point-mass, \(m_1\), \(m_2\). Each pendulum
+moves freely and independently and is connected by lengths \(l_1\) and \(l_2\)
+from their joints, \(q_1\) and \(q_2\) to their point-masses, \(m_1\),
+\(m_2\). The mass of the cart is considered point-mass as well and is denoted
+by \(m_c\) with its position \(q_c\) along the x-axis. \(\theta_1\) and
+\(\theta_2\) denote angular deviations from upright position for \(q_1\) and
+\(q_2\), respectively.
+
+% add figure here -- system setup DIP
 
 \begin{figure}[!t]
-\centering
-\includegraphics[width=2.5in]{dpend.png}
-where an .eps filename suffix will be assumed under latex,
-and a .pdf suffix will be assumed for pdflatex; or what has been declared
-via \DeclareGraphicsExtensions.
-\caption{Simulation Results}
-\label{fig_sim}
+    \centering
+    \includegraphics[width=2.5in]{fig01_cart001.png}
+    \caption{Physical System}
+    \label{fig_sim}
 \end{figure}
+
+% \begin{tikzpicture} [thick]
+
+%     % Angle of Pendulum
+%     \newcommand{\anga}{26.5}
+%     \newcommand{\angb}{-20}
+
+%     % grid
+%     \draw[step=.5, lightgray] (-2,0) grid (2, 6);
+%     % ground
+%     \draw [brown!80!red] (-2,0) -- (2,0);
+%     \fill [pattern = crosshatch dots,
+%         pattern color = brown!80!red] (-2,0) rectangle (2,-.2);
+
+%     % cart and DIP scope
+%     \begin{scope} [draw = orange,
+%         fill = orange!20,
+%         dot/.style = {orange, radius = .025}]
+
+%     % point coords
+%     \coordinate (q1) at (0,1.5);
+%     \coordinate (m1) at (1, 3.5);
+%     \coordinate (m2) at (-.5, 5.5); % [label=left:$m_2$]
+
+
+%     % rod 1
+%     \filldraw [rotate around = {-\anga:(q1)}] (.09,1.5) --
+%         node [midway, right] {$l_1$}
+%         % node [very near end, right] {$m_1$}
+%         +(0,2.15) arc (0:180:.09)
+%         coordinate [pos = .5] (T) -- (-.09,1.5);
+%     % rod 2
+%     \filldraw [rotate around = {0:(m2)}] (m1)+(-.09,1.5) --
+%         node [midway, left] {$l_2$}
+%         +(0,2.15) arc (0:180:.09)
+%         coordinate [pos = .5] (C) -- (m1) + (.09, 1.5);
+
+%     % masses
+%     % \shade [ball color=blue] (m1) circle [radius=.2cm];
+%     % \shade [ball color=blue] (m2) circle [radius=.2cm];
+
+%     % wheels
+%     \filldraw (-.65,.15) circle (.15);
+%     \fill [dot] (-.65,.15) circle;
+%     \filldraw (.65,.15) circle (.15);
+%     \fill [dot] (.65,.15) circle;
+
+
+%     \filldraw (-1,1.5) -- coordinate [pos = .5] (F)
+%         (-1,.3) -- node [above = .3cm] {$m_c$}
+%         (1,.3) -- (1,1.5)
+%         coordinate (X) -- (.1,1.5)
+%         arc (0:180:.1) -- (-1.014,1.5);
+
+%     \fill [dot] (0,1.52) circle;
+%     \end{scope}
+
+%     % lines and angles
+%     \begin{scope} [thin, orange!50!black]
+%         \draw (T) -- (0,1.52) coordinate (P);
+%         \draw [dashed] (P) + (0,0) -- +(0,1.25);
+%         \draw (P) + (0,.5) arc (90:90-\anga:.5) node [black, midway, above] {$\theta_1$};
+%         \draw (0, 3) node [black, midway, above = 1.1cm] {$q_1$};
+%     \end{scope}
+
+%     % forces
+%     \draw [stealth-] (F) -- node [above] {$u$} + (-1,0);
+%     % \draw [-stealth] (X) |- node [very near end, above right] {$x$} + (1,.3);
+
+%     % xy axis
+%     \draw [-stealth] (-2,2) -- (-2,3) node[midway, right] {$y$};
+%     \draw [-stealth] (-2,2) -- (-1,2) node[midway, above] {$x$};
+
+% \end{tikzpicture}
+
+\subsection{State Definition}
+Suppose we have a continuous-time, nonlinear system presented in state space
+form.
+% ss form
+
+\begin{equation}
+    % \label{eq:6}
+    \dot{x} = f(x,u),
+\end{equation}
+\begin{equation}
+% \label{eq:7}
+    y = h(x).
+\end{equation}
+
+whats f - prediction model
+whats h - obs model
+omit obs noise, it requires EKF??
+
+Our goal is to stabilize the described highly nonlinear system in the upright
+configuration
+
+\subsection{Noise and Friction}
+% paper
+
+\subsection{Global Coordinate Frame}
+We need to form a homogenous configuration space to present state variables
+\(x, \theta_1, \theta_2\) by forming a global coordinate frame with \(x(t=0)\)
+as the origin.
+
+\begin{equation*}
+    % \label{eq:6}
+q_c = \begin{bmatrix}
+    q \\
+    0 \\
+\end{bmatrix}, ~~
+q_1 = \begin{bmatrix}
+    q + l_1 \sin \theta_1 \\
+    l_1 \cos \theta_1 \\
+\end{bmatrix}, ~~
+q_2 = \begin{bmatrix}
+    q + l_1 \sin \theta_1 + l_2 \sin \theta_2 \\
+    l_1 \cos \theta_1 + l_2 \cos \theta_2 \\
+\end{bmatrix},
+\end{equation*}
+
+\noindent
+We denote position of point-masses for the cart, \(m_1\), and
+ \(m_2\) by \(q_c, q_1, q_2 \in \mathbb{R}^2\) on xy coordinates.
+
+\subsection{Other Considerations}
+Noise and Friction modeling, process noise versus observation noise.
+
+\section{Model Derivation}
+% steps
+
+
+
+\subsection{Equations of Motion}
+As it is layed out in Lagrangian mechanics; first we must obtain the Lagrangian
+of the physical model, \(\mathcal{L}= K -P\). \(K\) and \(P\) represent the
+\emph{kinetic} and \emph{potential} energies of the system. \(K\) and \(P\) are
+obtained by,
+\begin{equation}
+    K = \frac{1}{2} m v^2 =~ \frac{1}{2} {m_c\|\dot{q_c}\|^2 + m_1\|\dot{q_1}\|^2 + m_2\|\dot{q_2}\|^2}
+\end{equation}
+
+\subsection{Continues-Time, Nonlinear Model}
+\subsection{Optimal Control}
+% define
+% in other words
+% so we do this
+
+\subsection{Discrete, Nonlinear Model}
+
+\subsection{Discrete, Linear Model}
+
+\subsection{General Time-Invariant Cost Function}
+
+\subsection{Linear Quadratic Regulator Solution}
+
+\section{Simulations and Results}
+% Python simulation
+% https://www.do-mpc.com/en/v4.1.0/example_gallery/DIP.html1
+
+
+
 
 % Note that IEEE typically puts floats only at the top, even when this
 % results in a large percentage of a column being occupied by floats.
