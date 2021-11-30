@@ -233,28 +233,37 @@ configuration
 
 \subsection{Global Coordinate Frame}
 We need to form a homogenous configuration space to present state variables
-\(x, \theta_1, \theta_2\) by forming a global coordinate frame with \(x(t=0)\)
+\(q, \theta_1, \theta_2\) by forming a global coordinate frame with \(x(t=0)\)
 as the origin.
-
-\begin{equation*}
+\begin{equation}
+    \begin{split}
     % \label{eq:6}
-q_c = \begin{bmatrix}
+    q_c = \begin{bmatrix}
     q \\
     0 \\
-\end{bmatrix}, ~~
-q_1 = \begin{bmatrix}
+    \end{bmatrix}, ~~
+    q_1 = \begin{bmatrix}
     q + l_1 \sin \theta_1 \\
     l_1 \cos \theta_1 \\
-\end{bmatrix}, ~~
-q_2 = \begin{bmatrix}
+    \end{bmatrix}, \\
+    % \label{eq:6}
+    q_2 = \begin{bmatrix}
     q + l_1 \sin \theta_1 + l_2 \sin \theta_2 \\
     l_1 \cos \theta_1 + l_2 \cos \theta_2 \\
 \end{bmatrix},
-\end{equation*}
-
+\end{split}
+\end{equation}
 \noindent
-We denote position of point-masses for the cart, \(m_1\), and
- \(m_2\) by \(q_c, q_1, q_2 \in \mathbb{R}^2\) on xy coordinates.
+We denote position of point-masses for \(m_c\), \(m_1\), and
+\(m_2\) by \(q_c, q_1, q_2 \in R^2\) on the x-y plane.
+We seek to define our system in terms of these state variables. Thus, we define
+state variable vector \(q(t)\) as
+\begin{equation}
+q = [q_c, q_1, q_2]^{T}
+\end{equation}
+In later section, we formally rewrite state variable definitions independent of
+time \(t\) via a linearization process. For simpler representation, we
+denote state variable vector as \(q:=q(t)\).
 
 \subsection{Other Considerations}
 Noise and Friction modeling, process noise versus observation noise.
@@ -265,21 +274,98 @@ Noise and Friction modeling, process noise versus observation noise.
 
 
 \subsection{Equations of Motion}
-As it is layed out in Lagrangian mechanics; first we must obtain the Lagrangian
+As it is laid out in \emph{Lagrangian mechanics}; first we must obtain the Lagrangian
 of the physical model, \(\mathcal{L}= K -P\). \(K\) and \(P\) represent the
-\emph{kinetic} and \emph{potential} energies of the system. \(K\) and \(P\) are
-obtained by,
+\emph{kinetic} and \emph{potential} energies of the system. \(K\) is the total
+kinetic energy from all three masses and in later sections, we will discuss
+transforming \emph{Lagrangian mechanics} to \emph{Hamiltonian mechanics} by
+replacing velocities with \emph{momenta}. Here, we define K as
 \begin{equation}
-    K = \frac{1}{2} m v^2 =~ \frac{1}{2} {m_c\|\dot{q_c}\|^2 + m_1\|\dot{q_1}\|^2 + m_2\|\dot{q_2}\|^2}
+    K = \frac{1}{2} m v^2 =~ \frac{1}{2} {m_c\|\dot{q_c}\|^2 + m_1\|\dot{q_1}\|^2 + m_2\|\dot{q_2}\|^2}.
 \end{equation}
 
+P denotes the overall potential energy of the system; but since the cart rolls
+flat along the x axis, it is inherently incapable of storing energy so we discard
+it. P is obtained by
+\begin{equation}
+    P = g \left[ m_1 l_1 \cos \theta_1 + m_2 (l_1 \cos \theta_1 + l_2 cos \theta_2) \right]
+\end{equation}
+Where \(g \in R\) denotes gravitational acceleration.
+Next, we envoke the \emph{Euler-Lagrange} equation to write the following ODE system
+whose solution is the position and velocity configuration vector of the cart
+and masses on the x-y plane, given the final time, previous state, system
+dynamics, control input and disturbances.
+\begin{equation}
+    y(t) = f(t,q,\dot{q},u,\omega)
+\end{equation}
+\emph{The Lagrange Equations of Motions} are defined as
+\begin{equation}
+    Q = \frac{\partial\mathcal{L}}{\partial f_{i}} - \frac{d}{dt} \left( \frac{\partial \mathcal{L}}{\partial f_{i}}\right).
+\end{equation}
+Where \(Q\) represents the vector of sum of external forces acting on the plan.
+\begin{equation}
+    \mathcal{L} = \mathcal{L}(t, q, \dot{q})
+\end{equation}
+\begin{equation}
+\begin{cases}
+\begin{array}{rcl}
+    u + \omega_1 -d_1 \dot{q} &=& \frac{d}{dt} \{\frac{\partial\mathcal{L}}{\partial\dot{q}}\}-\{\frac{\partial\mathcal{L}}{\partial q}\}\\
+    \omega_2 -d_2 \dot{\theta_1} &=& \frac{d}{dt} \{\frac{\partial\mathcal{L}}{\partial\dot{\theta_1}}\}-\{\frac{\partial\mathcal{L}}{\partial \theta_1}\}\\
+    \omega_3 -d_3 \dot{\theta_2} &=& \frac{d}{dt} \{\frac{\partial\mathcal{L}}{\partial\dot{\theta_2}}\}-\{\frac{\partial\mathcal{L}}{\partial \theta_2}\}\\
+    \end{array}
+\end{cases}
+\end{equation}
+
+So far our derivation has made our expressions more complicated but these steps are
+neccessary for capturing the full dynamical characteristics of the system. In the
+following section, we derive the continuous-time nonlinear model of described
+system. Moreover in \emph{Optimal Control} section, we briefly explain how one
+could derive \emph{the general optimal control solution} for a \emph{positive
+definite and semidefinite energy system} with known characteristic parameters.
+Moreover, we intuitively explain and reference why we could consider the solution
+space to such a ODE as \emph{smooth manifold} that maps current and future state
+through recursion and its energy state decays towards a local minima.
+
+
 \subsection{Continues-Time, Nonlinear Model}
+We used MATLAB Symbolic Math Toolbox to derive the resultant ODE. Obtaining
+symbolic or implicit expressions of our ODE will allow us to analytically derive
+to the optimal solution.
+\begin{equation}
+\text{\scriptsize $
+% \begin{cases}
+\begin{array}{rcl}
+        u + \omega_1 -d_1 \dot{q} &=& (m_c+m_1+m_2)\ddot{q}+l_1(m_1+m_2)\ddot{\theta_1} \cos \theta_1\\
+        & & + m_2 l_2 \ddot{\theta_2} \cos \theta_2 - l_1 (m_1+m_2) \dot{\theta_1}^2 \sin \theta_1 \\
+        & & - m_2 l_2 \dot{\theta_2}^2 \sin \theta_2\\
+        \omega_2 -d_2 \dot{\theta_1} &=& l_1 (m_1+m_2) \ddot(q) \cos \theta_1
+        +l_1^2 (m_1+m_2) \ddot{\theta_1}\\
+        & & +l_1 l_2 m_2 \ddot{\theta_2} \cos (\theta_1 - \theta_2)+ l_1 l_2 m_2 \dot{\theta_2}^2 \sin(\theta_1 - \theta_2) \\
+        & & - g(m_1+m_2) l_1 \sin \theta_1 \\
+        \omega_3 -d_3 \dot{\theta_2} &=& l_2 m_2 \ddot{q} \cos \theta_2
+        + l_1 l_2 m_2 \ddot{\theta_1} \cos (\theta_1 -\theta_2)
+        + l_2^2 m_2 \ddot{\theta_2}\\
+        & & -l_1 l_2 m_2 \dot{\theta_1}^2 \sin (\theta_1 - \theta_2)
+        - l_2 m_2 g \sin \theta_2\\
+    \end{array}
+% \end{cases}
+$}
+\end{equation}
+
 \subsection{Optimal Control}
 % define
 % in other words
 % so we do this
 
-\subsection{Discrete, Nonlinear Model}
+\subsection{Linearization}
+First, we rewrite the equations of motion into matrix form to batch acceleration,
+velocity, and position terms into separate matrices. A second order representation
+of the physical system is sufficient to provide an accurate enough estimate,
+per \emph{Taylor Series Linearization} method.
+\begin{equation}
+D(q) \ddot{q} + C(q, \dot{q}) \dot{q} + G(q) = Hu
+\end{equation}
+where matrices \(\), \(D(q):= D(q(t))\)
 
 \subsection{Discrete, Linear Model}
 
