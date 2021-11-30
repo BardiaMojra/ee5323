@@ -41,7 +41,8 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Toward Real-Time State Estimation and Tracking of Elastic Rods}
+\title{Generalized Optimal Control Solution for a Highly
+Nonlinear Dynamic System: Double Inverted Pendulum on a Cart}
 \author{Bardia~Mojra}
 % make the title area
 \maketitle
@@ -361,17 +362,117 @@ $}
 First, we rewrite the equations of motion into matrix form to batch acceleration,
 velocity, and position terms into separate matrices. A second order representation
 of the physical system is sufficient to provide an accurate enough estimate,
-per \emph{Taylor Series Linearization} method.
+per \emph{Taylor Series Linearization} method. This is an important step as
+identifying system dynamics lies at the heart of \emph{Optimal Control}.
 \begin{equation}
 D(q) \ddot{q} + C(q, \dot{q}) \dot{q} + G(q) = Hu
 \end{equation}
-where matrices \(\), \(D(q):= D(q(t))\)
+where matrix functions \(D(q) \ddot{q} + C(q, \dot{q}) \dot{q} + G(q)\)
+represent systems dynamics with respect to time,
+current state and previous state. Time variable \(t\) is omitted to simplify
+notation. The system energy state (left hand side of
+above EOM) is presented in relation to external forces \(Hu\) acting on the
+system. Vector \(u \in R^1\) represents external input forces vector and matrix
+\(H\) represents its relationship with state variable functions. Matrix
+functions \(D(q),~C(q, \dot{q}),~G(q)\) and vector H are define as
 
+\begin{equation}
+% \text{\scriptsize $
+% \begin{cases}
+% \begin{array}{rcl}
+    D(q) = \begin{pmatrix}
+
+    \end{pmatrix}
+% \end{array}
+% \end{cases}
+% $}
+\end{equation}
+
+
+Before we perform linearization, we need to rewrite the EOM in the following
+matrix form to obtain the final ODE. By doing so, we rewrite state dynamics as
+a function of derivative terms instead of time (\emph{isomorphism}). Per \emph{Lyapunov
+Control Function theory} (LCF) for autonomous dynamical systems and
+\emph{LaSalle's}, we can assume there exists at least one
+\emph{Optimal Control Trajectory} or \emph{Hamiltonian Flow} for any acceptable
+initial conditon if the LCF is \emph{positive definite} or \emph{positive
+semi-definite}. Moreover, the energy function must be \emph{isomorphic} and
+\emph{symmetric} in order to form \emph{stable} control trajectory.
+
+\begin{equation}
+M(q)\dot{q} = A(q)q + Bu
+\end{equation}
+
+Where \emph{positive definite} or \emph{positive semi-definite} constraints are
+evaluated by computing the determinant of \(M\).
+\begin{equation}
+det(M) > 0;~ \forall q
+\end{equation}
+Such that, the final ODE can be written as
+\begin{equation}
+    \dot{q} = M(q)^{-1}(A(q)q + Bu)
+\end{equation}
+To make remove the time index and make the ODE fully \emph{isomorphic}, we
+define a new variable state vector as
+\begin{equation}
+    x:=
+    \begin{bmatrix}
+        y \\
+        \dot{y}\\
+    \end{bmatrix}
+\end{equation}
+
+L(x, u) =
+ x T
+ Qx + uT Ru
+
+
+we
 \subsection{Discrete, Linear Model}
+\begin{equation}
+\begin{array}{rcl}
+    x &=& Ax + Bu \\
+    y &=& \dot{x} \\
+\end{array}
+\end{equation}
 
-\subsection{General Time-Invariant Cost Function}
+where A and B are defined as
+\begin{equation}
+    A =
+\begin{bmatrix}
+        0 & I \\
+        D^{-1} \frac{\partial G}{\partial q} & 0 \\
+\end{bmatrix}
+\end{equation}
 
-\subsection{Linear Quadratic Regulator Solution}
+\begin{equation}
+    B =
+\begin{bmatrix}
+    0 \\
+    D^{-1} H\\
+    \end{bmatrix}
+    \end{equation}
+
+\subsection{General Time-Invariant Cost Function and Linear Quadratic Regulator SolutionLQR}
+So far, we have modelled, linearized and discretized our system using state
+space general form. In the process, we systematically reduced the solution space
+complexity by replacing time \(t\) and velocity dimension as linear products of
+current and previous states. This allows us to analytically derive a general
+form optimal solution. But before we reach that step, we need to define a
+general \emph{Cost Function} \(J\) that only depends on absolute minimal parameters,
+which we will later optimize to arrive to a \emph{minimal surface}. Quadratic
+performance index \(J \) is
+defined as [see page 24 of Optimal control - now we can optimize similar to static cases]
+\begin{equation}
+J(x,u) = \frac{1}{2}x^{T}Q x + \frac{1}{2}u^{T}Ru
+\end{equation}
+whose solution is the minimal cost or minimun-energy input required for the
+system to reach local minima, for any given initial state. Next, we minimize \(J\)
+which will yield the state feedback weight vector \(K\) and is obtained by
+recursively solving the dynamic \emph{Riccati} equation.
+It is important to note that calculation of Quadratic losses are carries out by
+performing dot product of state vector with its transpose and energy magnitude.
+
 
 \section{Simulations and Results}
 % Python simulation
