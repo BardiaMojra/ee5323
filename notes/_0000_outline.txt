@@ -1,0 +1,263 @@
+COURSE OUTLINE
+
+Topics with no link below are found in the textbooks.
+
+ 
+
+MATLAB review
+
+State Variable Systems
+
+Computer Simulation of Nonlinear Systems
+
+Basic results from math and functional analysis
+
+Examples 1- continuity, differentiability, Lipschitz
+
+Vector Spaces, Norms, and Inner Products
+
+ 
+
+NONLINEAR CONTROL (Slotine and Li book)
+
+Nonlinear System Behavior
+
+Examples 1- equation solution- Slotine p. 7 - obsolete
+
+Examples 2- Solutions of some Typical Equations
+
+Classical Methods in Nonlinear Systems Analysis
+
+Phase Plane Analysis – Slotine and Li Chapter 2, p. 33
+
+Review of Second-Order systems
+
+Linearization of State Variable Systems
+
+Examples 3- linearization and multiple equilibrium points, Fibonacci Numbers - obsolete
+
+Eigenvectors and directions in phase plane-
+
+Limit Cycles- S&L Section 2.5
+
+Genesio- Estimating the Region of Attraction
+
+Linearization about a trajectory- Satellite in Planar Orbit
+
+Flows, Orbital derivatives, First Integral of Motion- (Verhulst p. 18)
+
+Fundamentals of Lyapunov Analysis – S&L Chapter 3
+
+Matrix Norms, positive definite matrices
+
+Definitions of Stability- SISL, AS, ES, UUB
+
+Lyapunov’s Direct Method
+
+Plotting Lyapunov Functions using MATLAB
+
+Lyapunov equilibrium point theorems
+
+Lyapunov Examples
+
+LaSalle extension and Invariant set theorems
+
+UUB
+
+Lyapunov equation  for Linear Time-Invariant systems
+
+Convergence rate
+
+Norms- vector, matrix, function, system
+
+Vector Spaces, Norms, and Inner Products- Section 2.5 of robot control book
+
+Small Gain Theorem, section 2.10 of robot control book
+
+Advanced Stability Theory- S&L Chapter 4
+
+Non-autonomous systems
+
+UAS
+
+Lyapunov for time-varying systems
+
+Linear time-varying systems
+
+Instability Theorems
+
+Converse Theorems
+
+Barbalat’s Lemma – also works for TV systems (LaSalle extension does not)
+
+ 
+
+Controls Design using Lyapunov Techniques 1
+
+Control Design Using Lyapunov examples 1
+
+Sliding mode control  
+
+Adaptive and Robust control powerpoint presentation
+
+Adaptive control proof
+
+Robust control proof
+
+ 
+
+Controls Design using Lyapunov Techniques- S&L Chapter 6
+
+Control Lyapunov Function
+
+Input/output feedback linearization
+
+I/O feedback linearization normal form- S&L Section 6.4
+
+Internal Dynamics
+
+Zero Dynamics – S&L p. 253
+
+Inverse dynamics- S&L p. 263
+
+Backstepping – (Global Asymptotic Stabilization) S&L p. 259
+
+ 
+
+Feedback Linearization Control of AC Microgrids
+
+ 
+
+Quadrotor Modeling and control
+
+Backstepping Design of quadrotor controller- journal paper
+
+Backstepping Design of quadrotor controller- powerpoint presentation
+
+Dynamic Inversion Design of quadrotor controller
+
+ 
+
+Nonholonomic mobile robot control
+
+Backstepping Design of mobile robot controller
+
+ 
+
+Optimal Control and Differential Games
+
+Chapter 10 of F.L. Lewis, D. Vrabie, and V. Syrmos, Optimal Control, third edition, John Wiley and Sons, New York, 2012.
+download pdf file
+
+ 
+
+ 
+
+Input-State feedback linearization- S&L Section 6.2
+
+ 
+
+Controllability and Observability of nonlinear systems
+
+L operator gain- Khalil, Nonlinear Systems, 3rd edition, Chapter 5
+
+Small Gain Theorem- Khalil, Nonlinear Systems, 3rd edition, Section 5.4
+
+ 
+
+Robot Controller design
+
+pp. 130-166 of  F.L. Lewis, S. Jagannathan, and A. Yesildirek, Neural Network Control of Robot Manipulators and Nonlinear Systems, Taylor and Francis, London, 1999.
+download pdf file
+
+Robot Dynamics and Properties
+
+Sliding Mode Computed-Torque Control
+
+ 
+
+ 
+
+Positive Systems- S&L Section 4.6
+
+Passivity- S&L Section 4.7
+
+ 
+
+Nonlinear systems and the Hamilton-Jacobi equations
+
+Lyapunov stability, dissipativity, optimal control
+
+Optimal control and Differential Games
+
+Chapter 10 of F.L. Lewis, D. Vrabie, and V. Syrmos, Optimal Control, third edition, John Wiley and Sons, New York, 2012.
+download pdf file
+
+H-infinity control and dynamic games
+
+Sliding Mode Control
+
+Switching control
+
+ 
+
+Game Theory- Vamvoudakis notes
+
+ 
+
+COMPLEX SYSTEMS AND CHAOS (Strogatz book)
+
+Bifurcations
+
+Movric notes
+
+Saddle-Node, Transcritical, Pitchfork
+
+Catastrophes
+
+Flows on the Circle
+
+Ghosts and bottlenecks
+
+2-Dimensional Flows
+
+Fixed points for linear systems
+
+Hyperbolic fixed points
+
+Conservative systems and potential
+
+First integral of motion and energy
+
+Poincare-Bendixson Theorem
+
+Bifurcations in 2-D systems
+
+Saddle-node, Transcritical, Pitchfork
+Hopf Bifurcation
+Bifurcations of Cycles
+Saddle-Node, Infinite Period, Homoclinic
+Coupled Oscillators and Synchronization
+Motion on the torus
+Poincare Map
+Chaos
+Lorenz equations
+Volume contraction, Fixed points, Stability of origin,
+Strange Attractor
+Lorenz Map
+1-Dimensional Discrete maps
+Logistic Map
+Cobweb Map
+Period-Doubling & Chaos
+Orbit Diagram
+Lyapunov Exponent
+Period Doubling Universal Constants
+Rossler System
+Fractals
+Cantor Set
+Dimension of Fractals
+
+ 
+HISTORY OF FEEDBACK CONTROL
+
+
