@@ -6,9 +6,10 @@ channels:
   - defaults
 
 dependencies:
-  - python
+  - python3
   - numpy # matrix and numerical operations lib
   - pandas # dataset handling lib
+  - csvkit # for storing datasets to csv files
   - matplotlib # plotting lib
   - pyglet # multimedia lib
   - pymunk # 2D physics lib
