@@ -7,8 +7,9 @@ channels:
 
 dependencies:
   - python
-  - numpy
-  - matplotlib
-  - pandas
-  - pip:
-      - gekko
+  - numpy # matrix and numerical operations lib
+  - pandas # dataset handling lib
+  - matplotlib # plotting lib
+  - pyglet # multimedia lib
+  - pymunk # 2D physics lib
+  # - pip:
