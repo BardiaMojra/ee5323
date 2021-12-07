@@ -1,0 +1,14 @@
+name: dip
+
+channels:
+  - conda-forge
+  - anaconda
+  - defaults
+
+dependencies:
+  - python
+  - numpy
+  - matplotlib
+  - pandas
+  - pip:
+      - gekko
