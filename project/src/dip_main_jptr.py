@@ -15,65 +15,133 @@
 import csv
 import math
 import os
+import pygame
 import pyglet
 import pymunk
 import pymunk.constraints
+import pymunk.pygame_util
+import pandas as pd
+import pyglet.gl as gl
+# from pyopengl import glColor3b
+
+''' custom libs
+'''
+import dvm
+from config import config
 
 ''' NBUG
 '''
 from nbug import *
 
-''' MOD CONFIG
+''' TEST CONFIG
 '''
-_REC_DATA = True
-OUT_DIR = '../out/'
-TEST_ID = 'test_000'
-OUT_FILE_PATH = OUT_DIR+TEST_ID+'_dip.csv'
-
-''' MODEL CONFIG
-'''
+TEST_ID = 'Test 007'
 # cart
 cart_mass = 0.5
 cart_size = 0.3, 0.2
 '''   pendulum 1   '''
-pend_1_length = 0.6
-pend_1_mass = 0.2
-pend_1_moment = 0.001
-pend_1_radius = 0.05
-'''   pendulum 2  '''
-pend_2_length = 0.6
-pend_2_mass = 0.3
-pend_2_moment = 0.001
-pend_2_radius = 0.05
+l_1 = 0.5 # 6, 5, 4
+m_1 = 0.2 # 2, 3, 4 -- 1 -> stable
+m_1_moment = 0.001
+m_1_radius = 0.05
 
+'''   pendulum 2  '''
+l_2 = 0.6 # 6, 5 -- 3 -> unstable
+m_2 = 0.2 # 2, 3, 4 -- 2 -> unstable
+m_2_moment = 0.001
+m_2_radius = 0.05
+
+OUT_DIR = '../out/'
+output_labels=['t', 'x', 'dx', 'th_1', 'dth_1', 'th_2', 'dth_2']
+output_header='t, x, dx, th_1, dth_1, th_2, dth_2\n'
+# K gain matrix and Nbar found from modelling via Jupyter
+# K = [16.91887353, 21.12423935, 137.96378003, -3.20040325, -259.72220049,  -50.48383455]
+# Nbar = 17.0
+
+K = [51.43763708,
+     54.12690472,
+     157.5467596,
+     -21.67111679,
+     -429.11603909,
+     -88.73125241]
+Nbar = 51.5
+
+
+test = config(TEST_ID,
+              OUT_DIR,
+              output_labels,
+              cart_mass,
+              cart_size,
+              l_1,
+              m_1,
+              m_1_moment,
+              m_1_radius,
+              l_2,
+              m_2,
+              m_2_moment,
+              m_2_radius,
+              K,
+              Nbar)
+test.log_config()
+
+''' MOD CONFIG
+'''
+SCREEN_WIDTH  = 700
+SCREEN_HEIGHT = 500
+# sim config
+MAX_FORCE = 25
+DT = 1 / 60.0
+PPM = 200.0 # pxls per meter
+# color = green
+white_color = (0,0,0,0)
+black_color = (255,255,255,255)
+green_color = (0,135,0,255)
+red_color   = (135,0,0,255)
+blue_color  = (0,0,135,255)
 
 ''' main
 '''
-SCREEN_HEIGHT = 700
-window = pyglet.window.Window(1000, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulator')
-
+pygame.init()
+# screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+# clock = pygame.time.Clock()
+window = pyglet.window.Window(SCREEN_WIDTH, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulation')
+gl.glClearColor(255,255,255,255)
 # setup the space
 space = pymunk.Space()
+# options = pymunk.pygame_util.DrawOptions(surface)
+# space.debug_draw(options)
 space.gravity = 0, -9.81
+# space.debug_draw(options)
 
 fil = pymunk.ShapeFilter(group=1)
 
+# screen.fill(pygame.Color("white"))
+# options = pymunk.pygame_util.DrawOptions(screen)
+# space.debug_draw(options)
 # ground
 ground = pymunk.Segment(space.static_body, (-4, -0.1), (4, -0.1), 0.1)
+# ground.color = pygame.Color("pink")
 ground.friction = 0.1
 ground.filter = fil
 space.add(ground)
-
+# space.debug_draw(options)
+# cart
 cart_moment = pymunk.moment_for_box(cart_mass, cart_size)
 cart_body = pymunk.Body(mass=cart_mass, moment=cart_moment)
 cart_body.position = 0.0, cart_size[1] / 2
 cart_shape = pymunk.Poly.create_box(cart_body, cart_size)
+cart_shape.color = black_color
+# cart_shape.color = red_color
+# cart_shape.fill_color = red_color
+# cart_shape.color = black_color
 cart_shape.friction = ground.friction
 space.add(cart_body, cart_shape)
-
-pend_1_body = pymunk.Body(mass=pend_1_mass, moment=pend_1_moment)
-pend_1_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + pend_1_length
-pend_shape = pymunk.Circle(pend_1_body, pend_1_radius)
+# space.debug_draw(options)
+# pendulum 1
+pend_1_body = pymunk.Body(mass=m_1, moment=m_1_moment)
+pend_1_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + l_1
+pend_shape = pymunk.Circle(pend_1_body, m_1_radius)
 pend_shape.filter = fil
 space.add(pend_1_body, pend_shape)
 
@@ -83,89 +151,80 @@ joint.collide_bodies = False
 space.add(joint)
 
 # pendulum 2
-pend_2_body = pymunk.Body(mass=pend_2_mass, moment=pend_2_moment)
-pend_2_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + (2 * pend_2_length)
-pend_shape2 = pymunk.Circle(pend_2_body, pend_2_radius)
+pend_2_body = pymunk.Body(mass=m_2, moment=m_2_moment)
+pend_2_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + (2 * l_2)
+pend_shape2 = pymunk.Circle(pend_2_body, m_2_radius)
 pend_shape2.filter = fil
 space.add(pend_2_body, pend_shape2)
 
-# joint2
-joint2 = pymunk.constraints.PivotJoint(pend_1_body, pend_2_body, cart_body.position + (0, cart_size[1] / 2 + pend_2_length))
+# joint 2
+joint2 = pymunk.constraints.PivotJoint(pend_1_body, pend_2_body, cart_body.position + (0, cart_size[1] / 2 + l_2))
 joint2.collide_bodies = False
 space.add(joint2)
-
+# space.debug_draw(options)
 print(f"cart mass = {cart_body.mass:0.1f} kg")
-print(f"pendulum 1 mass = {pend_1_body.mass:0.1f} kg, pendulum moment = {pend_2_body.moment:0.3f} kg*m^2")
+print(f"pendulum 1 mass = {pend_1_body.mass:0.1f} kg, pendulum moment = {pend_1_body.moment:0.3f} kg*m^2")
 print(f"pendulum 2 mass = {pend_2_body.mass:0.1f} kg, pendulum moment = {pend_2_body.moment:0.3f} kg*m^2")
 
-# K gain matrix and Nbar found from modelling via Jupyter
-# K = [16.91887353, 21.12423935, 137.96378003, -3.20040325, -259.72220049,  -50.48383455]
-# Nbar = 17.0
 
-K = [51.43763708, 54.12690472, 157.5467596, -21.67111679, -429.11603909, -88.73125241]
-Nbar = 51.5
 
-# simulation stuff
 force = 0.0
-MAX_FORCE = 25
-DT = 1 / 60.0
 ref = 0.0
 
-# drawing stuff
-# pixels per meter
-PPM = 200.0
-
 color = (200, 200, 200, 200)
-label_x = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 28)
-label_theta = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 58)
-label_alpha = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 88)
-label_force = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 118)
+label_x = pyglet.text.Label(text='', font_size=12, color=color, x=10, y=SCREEN_HEIGHT - 28)
+label_th_1 = pyglet.text.Label(text='', font_size=12, color=color, x=10, y=SCREEN_HEIGHT - 58)
+label_th_2 = pyglet.text.Label(text='', font_size=12, color=color, x=10, y=SCREEN_HEIGHT - 88)
+label_force = pyglet.text.Label(text='', font_size=12, color=color, x=10, y=SCREEN_HEIGHT - 118)
 
-labels = [label_x, label_theta, label_alpha, label_force]
-
+labels = [label_x, label_th_1, label_th_2, label_force]
+OUT_DATA = OUT_DIR+TEST_ID+'_data.csv'
 # data recorder so we can compare our results to our predictions
-if os.path.exists(OUT_FILE_PATH):
-  os.remove(OUT_FILE_PATH)
-f = open(OUT_FILE_PATH, 'w')
-out = csv.writer(f)
-out.writerow(['time', 'x', 'theta', 'alpha'])
+if os.path.exists(OUT_DATA):
+  os.remove(OUT_DATA)
+with open(OUT_DATA, 'w') as f:
+  f.write(output_header)
+  f.close()
 currtime = 0.0
 record_data = True
 
 def draw_body(offset, body):
-    for shape in body.shapes:
-        if isinstance(shape, pymunk.Circle):
-            vertices = []
-            num_points = 10
-            for ii in range(num_points):
-                angle = ii / num_points * 2 * math.pi
-                vertices.append(body.position + (shape.radius * math.cos(angle), shape.radius * math.sin(angle)))
-            points = []
-            for v in vertices:
-                points.append(int(v[0] * PPM) + offset[0])
-                points.append(int(v[1] * PPM) + offset[1])
-
-            data = ('v2i', tuple(points))
-            pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_LOOP, data)
-        elif isinstance(shape, pymunk.Poly):
-            # get vertices in world coordinates
-            vertices = [v.rotated(body.angle) + body.position for v in shape.get_vertices()]
-            # convert vertices to pixel coordinates
-            points = []
-            for v in vertices:
-                points.append(int(v[0] * PPM) + offset[0])
-                points.append(int(v[1] * PPM) + offset[1])
-            data = ('v2i', tuple(points))
-            pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_LOOP, data)
-
-def draw_line_between(offset, pos1, pos2):
-    vertices = [pos1, pos2]
-    points = []
-    for v in vertices:
+  for shape in body.shapes:
+    if isinstance(shape, pymunk.Circle):
+      vertices = []
+      num_points = 10
+      for ii in range(num_points):
+        angle = ii / num_points * 2 * math.pi
+        vertices.append(body.position + (shape.radius * math.cos(angle), shape.radius * math.sin(angle)))
+      points = []
+      for v in vertices:
         points.append(int(v[0] * PPM) + offset[0])
         points.append(int(v[1] * PPM) + offset[1])
-    data = ('v2i', tuple(points))
-    pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_STRIP, data)
+
+      data = ('v2i', tuple(points))
+      gl.glColor3b(255,255,255)
+      pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_LOOP, data)
+    elif isinstance(shape, pymunk.Poly):
+      # get vertices in world coordinates
+      vertices = [v.rotated(body.angle) + body.position for v in shape.get_vertices()]
+      # convert vertices to pixel coordinates
+      points = []
+      for v in vertices:
+        points.append(int(v[0] * PPM) + offset[0])
+        points.append(int(v[1] * PPM) + offset[1])
+      data = ('v2i', tuple(points))
+      gl.glColor3b(255,255,255)
+      pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_LOOP, data)
+
+def draw_line_between(offset, pos1, pos2):
+  vertices = [pos1, pos2]
+  points = []
+  for v in vertices:
+    points.append(int(v[0] * PPM) + offset[0])
+    points.append(int(v[1] * PPM) + offset[1])
+  data = ('v2i', tuple(points))
+  gl.glColor3b(255,255,255)
+  pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINE_STRIP, data)
 
 
 def draw_ground(offset):
@@ -183,7 +242,7 @@ def draw_ground(offset):
 def on_draw():
   window.clear()
   # center view x around 0
-  offset = (500, 5)
+  offset = (250, 5)
   draw_body(offset, cart_body)
   draw_body(offset, pend_1_body)
   draw_line_between(offset, cart_body.position + (0, cart_size[1] / 2), pend_1_body.position)
@@ -195,57 +254,56 @@ def on_draw():
 
 
 def simulate(_):
-    # ensure we get a consistent simulation step - ignore the input dt value
-    dt = DT
+  # ensure we get a consistent simulation step - ignore the input dt value
+  dt = DT
 
-    # simulate the world
-    # NOTE: using substeps will mess up gains
-    space.step(dt)
+  # simulate the world
+  # NOTE: using substeps will mess up gains
+  space.step(dt)
 
-    # populate the current state
-    posx = cart_body.position[0]
-    velx = cart_body.velocity[0]
-    theta = pend_1_body.angle
-    thetav = pend_1_body.angular_velocity
-    alpha = pend_2_body.angle
-    alphav = pend_2_body.angular_velocity
+  # populate the current state
+  posx = cart_body.position[0]
+  velx = cart_body.velocity[0]
+  th_1 = pend_1_body.angle
+  th_1v = pend_1_body.angular_velocity
+  th_2 = pend_2_body.angle
+  th_2v = pend_2_body.angular_velocity
 
-    # dump our data so we can plot
-    if record_data:
-        global currtime
-        out.writerow([f"{currtime:0.4f}", f"{posx:0.3f}", f"{theta:0.3f}", f"{alpha:0.3f}"])
-        currtime += dt
+  # dump our data so we can plot
+  if record_data:
+    global currtime
+    with open(OUT_DATA, 'a+') as f:
+      f.write(f"{currtime:0.5f}, {posx:0.5f}, {velx:0.5f}, {th_1:0.5f}, {th_1v:0.5f}, {th_2:0.5f}, {th_2v:0.5f} \n")
+      f.close()
+    currtime += dt
 
-    # calculate our gain based on the current state
-    gain = K[0] * posx + K[1] * velx + K[2] * theta + K[3] * thetav + K[4] * alpha + K[5] * alphav
+  # calculate our gain based on the current state
+  gain = K[0] * posx + K[1] * velx + K[2] * th_1 + K[3] * th_1v + K[4] * th_2 + K[5] * th_2v
 
-    # calculate the force required
-    global force
-    force = ref * Nbar - gain
-
-    # kill our motors if our angles get out of control
-    if math.fabs(pend_1_body.angle) > 1.0 or math.fabs(pend_2_body.angle) > 1.0:
-        force = 0.0
-
-    # cap our maximum force so it doesn't go crazy
-    if math.fabs(force) > MAX_FORCE:
-        force = math.copysign(MAX_FORCE, force)
-
-    # apply force to cart center of mass
-    cart_body.apply_force_at_local_point((force, 0.0), (0, 0))
+  # calculate the force required
+  global force
+  force = ref * Nbar - gain
+  # kill our motors if our angles get out of control
+  if math.fabs(pend_1_body.angle) > 1.0 or math.fabs(pend_2_body.angle) > 1.0:
+    force = 0.0
+  # cap our maximum force so it doesn't go crazy
+  if math.fabs(force) > MAX_FORCE:
+    force = math.copysign(MAX_FORCE, force)
+  # apply force to cart center of mass
+  cart_body.apply_force_at_local_point((force, 0.0), (0, 0))
 
 
 # function to store the current state to draw on screen
 def update_state_label(_):
-    label_x.text = f'Cart X: {cart_body.position[0]:0.3f} m'
-    label_theta.text = f'Pendulum Angle Θ: {pend_1_body.angle:0.3f} radians'
-    label_alpha.text = f'Pendulum Angle α: {pend_2_body.angle:0.3f} radians'
-    label_force.text = f'Force: {force:0.1f} newtons'
+  label_x.text = f'Cart X: {cart_body.position[0]:0.3f} m'
+  label_th_1.text = f'Pendulum 1 Angle Θ: {pend_1_body.angle:0.3f} rad'
+  label_th_2.text = f'Pendulum 2 Angle α: {pend_2_body.angle:0.3f} rad'
+  label_force.text = f'Force: {force:0.1f} N'
 
 
 def update_reference(_, newref):
-    global ref
-    ref = newref
+  global ref
+  ref = newref
 
 
 # callback for simulation
@@ -260,3 +318,31 @@ pyglet.clock.schedule_once(update_reference, 17, 0.0)
 
 pyglet.app.run()
 f.close()
+
+# data recorder so we can compare our results to our predictions
+# f = open(OUT_DATA, 'r')
+
+df = pd.read_csv(OUT_DATA)
+dvm.dtplot01(df,
+           fignum=TEST_ID,
+           output_dir=OUT_DIR,
+           title='State Velocity Data',
+           figname=None,
+           show=True,
+            # save=True,
+           start=0,
+           end=None)
+
+df = dvm.get_losses(df, OUT_DIR)
+dvm.plot_losses(df,
+              fignum=TEST_ID,
+              output_dir=OUT_DIR,
+              title='State Error Data',
+              # figname=None,
+              show=True,
+              # save=True,
+              start=0,
+              end=None)
+
+# print losses
+dvm.print_losses(df)
