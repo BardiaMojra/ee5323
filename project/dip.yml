@@ -1,4 +1,4 @@
-name: dip
+name: dip_jupiter
 
 channels:
   - conda-forge
@@ -6,7 +6,7 @@ channels:
   - defaults
 
 dependencies:
-  - python3
+  - python
   - numpy # matrix and numerical operations lib
   - pandas # dataset handling lib
   - csvkit # for storing datasets to csv files

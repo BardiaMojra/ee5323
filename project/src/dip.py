@@ -22,7 +22,7 @@ class base(pyglet.window.Window):
 
   def render(self):
     self.clear()
-    self.label.draw()
+    # self.label.draw()
     self.flip()
 
   def on_close(self):

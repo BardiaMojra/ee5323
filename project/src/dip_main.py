@@ -33,42 +33,154 @@ OUT_FILE_PATH = OUT_DIR+TEST_ID+'_dip.csv'
 ''' MODEL CONFIG
 '''
 
+''' main
+'''
+
+SCREEN_HEIGHT = 700
+window = pyglet.window.Window(1000, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulator')
+# window = base()
+window.run()
+
+# window.run()
+
+# setup the space
+space = pymunk.Space()
+space.gravity = 0, -9.81
+
+fil = pymunk.ShapeFilter(group=1)
+
+# ground
+ground = pymunk.Segment(space.static_body, (-4, -0.1), (4, -0.1), 0.1)
+ground.friction = 0.1
+ground.filter = fil
+space.add(ground)
+
+# cart
+cart_mass = 0.5
+cart_size = 0.3, 0.2
+cart_moment = pymunk.moment_for_box(cart_mass, cart_size)
+cart_body = pymunk.Body(mass=cart_mass, moment=cart_moment)
+cart_body.position = 0.0, cart_size[1] / 2
+cart_shape = pymunk.Poly.create_box(cart_body, cart_size)
+cart_shape.friction = ground.friction
+space.add(cart_body, cart_shape)
+
+# pendulum properties
+pend_length = 0.6
+pend_mass = 0.2
+pend_moment = 0.001
+pend_radius = 0.05
+pend_body = pymunk.Body(mass=pend_mass, moment=pend_moment)
+pend_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + pend_length
+pend_shape = pymunk.Circle(pend_body, pend_radius)
+pend_shape.filter = fil
+space.add(pend_body, pend_shape)
+
+# joint
+joint = pymunk.constraints.PivotJoint(cart_body, pend_body, cart_body.position + (0, cart_size[1] / 2))
+joint.collide_bodies = False
+space.add(joint)
+
+# pendulum 2
+pend_body2 = pymunk.Body(mass=pend_mass, moment=pend_moment)
+pend_body2.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + (2 * pend_length)
+pend_shape2 = pymunk.Circle(pend_body2, pend_radius)
+pend_shape2.filter = fil
+space.add(pend_body2, pend_shape2)
+
+# joint2
+joint2 = pymunk.constraints.PivotJoint(pend_body, pend_body2, cart_body.position + (0, cart_size[1] / 2 + pend_length))
+joint2.collide_bodies = False
+space.add(joint2)
+
+print(f"cart mass = {cart_body.mass:0.1f} kg")
+print(f"pendulum1 mass = {pend_body.mass:0.1f} kg, pendulum moment = {pend_body.moment:0.3f} kg*m^2")
+print(f"pendulum2 mass = {pend_body2.mass:0.1f} kg, pendulum moment = {pend_body2.moment:0.3f} kg*m^2")
+
+# K gain matrix and Nbar found from modelling via Jupyter
+# K = [16.91887353, 21.12423935, 137.96378003, -3.20040325, -259.72220049,  -50.48383455]
+# Nbar = 17.0
+
+K = [51.43763708, 54.12690472, 157.5467596, -21.67111679, -429.11603909, -88.73125241]
+Nbar = 51.5
+
+# simulation stuff
+force = 0.0
+MAX_FORCE = 25
+DT = 1 / 60.0
+ref = 0.0
+
+# drawing stuff
+# pixels per meter
+PPM = 200.0
+
+color = (200, 200, 200, 200)
+label_x = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 28)
+label_theta = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 58)
+label_alpha = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 88)
+label_force = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 118)
+
+labels = [label_x, label_theta, label_alpha, label_force]
+
+if os.path.exists(OUT_FILE_PATH):
+  os.remove(OUT_FILE_PATH)
+with open(OUT_FILE_PATH, 'w') as f:
+  out = csv.writer(f)
+  out.writerow(['time', 'x', 'theta', 'alpha'])
+  currtime = 0.0
+  record_data = _REC_DATA
+  f.close()
+
+# callback for simulation
+pyglet.clock.schedule_interval(simulate, DT)
+pyglet.clock.schedule_interval(update_state_label, 0.25)
+
+# schedule some small movements by updating our reference
+pyglet.clock.schedule_once(update_reference, 2, 0.2)
+pyglet.clock.schedule_once(update_reference, 7, 0.6)
+pyglet.clock.schedule_once(update_reference, 12, 0.2)
+pyglet.clock.schedule_once(update_reference, 17, 0.0)
+
+# pyglet.app.run()
+# close the output file
+#f.close()
+
+print('\n\n\n--- end of main ---\n\n')
+
 
 ''' local routines
 '''
-class base(pyglet.window.Window):
-  def __init__(self):
-    # super(base, self).__init__(600, 600, fullscreen = False)
-    super(base, self).__init__(1000, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulator')
-    self.alive = 1
-    # self.label = pyglet.text.Label('Hello, world',
-                                  # font_name='Times New Roman',
-                                  # font_size=36,
-                                  # x=self.width//2, y=self.height//2,
-                                  # anchor_x='center', anchor_y='center')
-  def on_draw(self):
-    self.render()
+# class base(pyglet.window.Window):
+#   def __init__(self):
+#     # super(base, self).__init__(600, 600, fullscreen = False)
+#     super(base, self).__init__(1000, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulator')
+#     self.alive = 1
+#     # self.label = pyglet.text.Label('Hello, world',
+#                                   # font_name='Times New Roman',
+#                                   # font_size=36,
+#                                   # x=self.width//2, y=self.height//2,
+#                                   # anchor_x='center', anchor_y='center')
 
-  def render(self):
-    self.clear()
-    self.label.draw()
-    self.flip()
+#   def render(self):
+#     self.clear()
+#     # self.label.draw()
+#     self.flip()
 
-  def on_close(self):
-    self.alive = 0
+#   def on_close(self):
+#     self.alive = 0
 
-  def on_key_press(self, symbol, modifiers):
-    if symbol == pyglet.window.key.ESCAPE: # [ESC]
-      self.alive = 0
+#   def on_key_press(self, symbol, modifiers):
+#     if symbol == pyglet.window.key.ESCAPE: # [ESC]
+#       self.alive = 0
 
-  def run(self):
-    while self.alive == 1:
-      self.render()
-      # -----------> This is key <----------
-      # This is what replaces pyglet.app.run()
-      # but is required for the GUI to not freeze
-      #
-      event = self.dispatch_events()
+#   def run(self):
+#     while self.alive == 1:
+#       self.render()
+#       # -----------> This is key <----------
+#       # This is what replaces pyglet.app.run()
+#       # but is required for the GUI to not freeze
+#       #
+#       event = self.dispatch_events()
   # end of base class
 
 def draw_body(offset, body):
@@ -120,9 +232,8 @@ def draw_ground(offset):
   pyglet.graphics.draw(len(vertices), pyglet.gl.GL_LINES, data)
   return
 
-
-# @window.event
-def on_draw():
+@window.event
+def on_draw(self):
   window.clear()
   # center view x around 0
   offset = (500, 5)
@@ -136,8 +247,9 @@ def on_draw():
     label.draw()
   return
 
+
+
 def simulate(_):
-  global out
   global currtime
   # ensure we get a consistent simulation step - ignore the input dt value
   dt = DT
@@ -153,9 +265,8 @@ def simulate(_):
   alphav = pend_body2.angular_velocity
   # dump our data so we can plot
   if record_data:
-    row = f"{currtime:0.4f} "+f"{posx:0.3f} "+f"{theta:0.3f} "+f"{alpha:0.3f} "
+    row = [f"{currtime:0.4f}", f"{posx:0.3f}", f"{theta:0.3f}", f"{alpha:0.3f}"]
     nprint('>>', row)
-
     with open(OUT_FILE_PATH, 'w+') as f:
       out = csv.writer(f)
       out.writerow(row)
@@ -188,121 +299,3 @@ def update_reference(_, newref):
   global ref
   ref = newref
   return
-
-if __name__ == '__main__':
-  SCREEN_HEIGHT = 700
-  # window = pyglet.window.Window(1000, SCREEN_HEIGHT, vsync=False, caption='Double Inverted Pendulum Simulator')
-  window = base()
-  window.run()
-
-  # setup the space
-  space = pymunk.Space()
-  space.gravity = 0, -9.81
-
-  fil = pymunk.ShapeFilter(group=1)
-
-  # ground
-  ground = pymunk.Segment(space.static_body, (-4, -0.1), (4, -0.1), 0.1)
-  ground.friction = 0.1
-  ground.filter = fil
-  space.add(ground)
-
-  # cart
-  cart_mass = 0.5
-  cart_size = 0.3, 0.2
-  cart_moment = pymunk.moment_for_box(cart_mass, cart_size)
-  cart_body = pymunk.Body(mass=cart_mass, moment=cart_moment)
-  cart_body.position = 0.0, cart_size[1] / 2
-  cart_shape = pymunk.Poly.create_box(cart_body, cart_size)
-  cart_shape.friction = ground.friction
-  space.add(cart_body, cart_shape)
-
-  # pendulum properties
-  pend_length = 0.6
-  pend_mass = 0.2
-  pend_moment = 0.001
-  pend_radius = 0.05
-  pend_body = pymunk.Body(mass=pend_mass, moment=pend_moment)
-  pend_body.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + pend_length
-  pend_shape = pymunk.Circle(pend_body, pend_radius)
-  pend_shape.filter = fil
-  space.add(pend_body, pend_shape)
-
-  # joint
-  joint = pymunk.constraints.PivotJoint(cart_body, pend_body, cart_body.position + (0, cart_size[1] / 2))
-  joint.collide_bodies = False
-  space.add(joint)
-
-  # pendulum 2
-  pend_body2 = pymunk.Body(mass=pend_mass, moment=pend_moment)
-  pend_body2.position = cart_body.position[0], cart_body.position[1] + cart_size[1] / 2 + (2 * pend_length)
-  pend_shape2 = pymunk.Circle(pend_body2, pend_radius)
-  pend_shape2.filter = fil
-  space.add(pend_body2, pend_shape2)
-
-  # joint2
-  joint2 = pymunk.constraints.PivotJoint(pend_body, pend_body2, cart_body.position + (0, cart_size[1] / 2 + pend_length))
-  joint2.collide_bodies = False
-  space.add(joint2)
-
-  print(f"cart mass = {cart_body.mass:0.1f} kg")
-  print(f"pendulum1 mass = {pend_body.mass:0.1f} kg, pendulum moment = {pend_body.moment:0.3f} kg*m^2")
-  print(f"pendulum2 mass = {pend_body2.mass:0.1f} kg, pendulum moment = {pend_body2.moment:0.3f} kg*m^2")
-
-  # K gain matrix and Nbar found from modelling via Jupyter
-  # K = [16.91887353, 21.12423935, 137.96378003, -3.20040325, -259.72220049,  -50.48383455]
-  # Nbar = 17.0
-
-  K = [51.43763708, 54.12690472, 157.5467596, -21.67111679, -429.11603909, -88.73125241]
-  Nbar = 51.5
-
-  # simulation stuff
-  force = 0.0
-  MAX_FORCE = 25
-  DT = 1 / 60.0
-  ref = 0.0
-
-  # drawing stuff
-  # pixels per meter
-  PPM = 200.0
-
-  color = (200, 200, 200, 200)
-  label_x = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 28)
-  label_theta = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 58)
-  label_alpha = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 88)
-  label_force = pyglet.text.Label(text='', font_size=18, color=color, x=10, y=SCREEN_HEIGHT - 118)
-
-  labels = [label_x, label_theta, label_alpha, label_force]
-
-  if not os.path.exists(OUT_FILE_PATH):
-    with open(OUT_FILE_PATH, 'w') as f:
-      out = csv.writer(f)
-      out.writerow(['time', 'x', 'theta', 'alpha'])
-      currtime = 0.0
-      record_data = _REC_DATA
-      f.close()
-  else:
-    os.remove(OUT_FILE_PATH)
-    with open(OUT_FILE_PATH, 'w') as f:
-      out = csv.writer(f)
-      out.writerow(['time', 'x', 'theta', 'alpha'])
-      currtime = 0.0
-      record_data = _REC_DATA
-      f.close()
-
-  # callback for simulation
-  pyglet.clock.schedule_interval(simulate, DT)
-  pyglet.clock.schedule_interval(update_state_label, 0.25)
-
-  # schedule some small movements by updating our reference
-  pyglet.clock.schedule_once(update_reference, 2, 0.2)
-  pyglet.clock.schedule_once(update_reference, 7, 0.6)
-  pyglet.clock.schedule_once(update_reference, 12, 0.2)
-  pyglet.clock.schedule_once(update_reference, 17, 0.0)
-
-  pyglet.app.run()
-
-  # close the output file
-  #f.close()
-
-  print('\n\n\n--- end of main ---\n\n')
