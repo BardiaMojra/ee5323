@@ -30,6 +30,7 @@
 \usepackage{stfloats}
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %\usepackage{url}
+\usepackage{hyperref}
 % \url{my_url_here}.
 % *** Do not adjust lengths that control margins, column widths, etc. ***
 % *** Do not use packages that alter fonts (such as pslatex).         ***
@@ -41,39 +42,31 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Generalized Optimal Control Solution for a Highly
-Nonlinear Dynamic System: Double Inverted Pendulum on a Cart}
+\title{Double Inverted Pendulum: \\
+Stable Control via Feedback Linearization with
+Python Simulation and Analysis}
 \author{Bardia~Mojra}
 % make the title area
 \maketitle
 
 \begin{abstract}
-%\boldmath
-% Manipulation of deformable linear objects (DLO's) or Kirchhoff's elastic rods
-% (not the same)
-% has
-% brought much-needed attention to a category of open problems in robotics.
-% DLO is described as an elastic rod with relatively small diameter and large
-% length. These objects deform along store energy  bend and twist depending  problem can be reframed to describe a wide range of
-% problems with applications in automotive wiring harness manufacturing, surgical
-% suturing, agriculture, and construction, to name a few. DLOs are a subset of
-% all deformable objects but they are the simplest to model and analyze (compare to
-% 2D and 3D deformable objects).
-% Existing literature on the topic include various model-based, model-free, and
-% hybrid approaches, where they tackle this problem at different levels.
-% This research problem can be divided into smaller and more intuitive problems such
-% as perception, state dynamic and shape deformity estimation, tracking and control,
-% path planning, as well as obstacle and self-collision avoidance.
-% In this article, I focus on modeling shape deformity and state dynamics of
-% a DLO with both ends are held in a static configuration, forming a closed-loop
-% geometric feedback control loop. I start by briefly reviewing relative work.
-% Then, I provide a mathematical framework for modeling DLO curvature and torsion.
-% Next, I present a simulation code where various configurations and motions are
-% synthesized. The following section presents my effort to estimate and track
-% object deformity and dynamics. Next, I present test cases and a quantified
-% analysis of the tracker. Lastly, I discuss shortcomings, open questions and
-% future steps.
-This is abstract
+Stable control of the Double Inverted Pendulum (DIP) is a classic hard problem in
+control systems. The system is highly nonlinear and sensitive to
+the initial conditions. This article focuses on the derivation of
+\emph{equations of motion} and \emph{feedback linearization} method which,
+were used to develop a symbolic representation of the system. We show that the
+system characteristic matrix is positive definite and is invertible as required
+by \emph{Lyapunov's direct method}. Using MATLAB
+Control Toolbox, we solve the continuous \emph{Lyapunov Control Function} to
+obtain the \emph{linear quadratic regulator} (LQR) solution which is considered
+to be unique, stable, and optimal. To enhance this case study,
+an end-to-end software suite is developed in Python to simulate and animate the system. Moreover, a series of experiments are designed and performed to study 1) effects of variations in model
+parameters (i.e. masses, pendulum lengths, and friction).
+2) To quantify system behavior and stability at different initial condition, given tuned and
+untuned control parameters. 3) And to investage and discover some evidence of
+the chaotic nature of the system, as well as capturing it. The software suite
+developed for this project will be made available to public to MIT license at \href{https://github.com/BardiaMojra/dip}{github.com/BardiaMojra/dip}.
+
 \end{abstract}
 
 % \IEEEpeerreviewmaketitle

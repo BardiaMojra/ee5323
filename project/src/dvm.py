@@ -25,7 +25,7 @@ from nbug import *
 '''
 matplotlib.pyplot.ion()
 plt.style.use('ggplot')
-
+colors=['yellowgreen','firebrick', 'royalblue', 'goldenrod', 'mediumorchid']
 font = {'family': 'serif',
         'color':  'darkred',
         'weight': 'normal',
@@ -63,13 +63,14 @@ def plot_df(df:pd.DataFrame,
   # plot_colors = iter([plt.cm.tab100(i) for i in range(20)])
   # print(df.head(5))
 
+
   # plot
   fig = plt.figure(figsize=figsize)
   xy = df.to_numpy(copy=True)
   for i, label in enumerate(labels):
     if i == 0: pass
     else:
-      plt.plot(xy[:,0], xy[:,i],label=label)
+      plt.plot(xy[:,0], xy[:,i],label=label, color=colors[i])
   plt.legend(loc='best')
   plt.grid(True)
   plt.xlabel('time', fontdict=font)
@@ -94,6 +95,7 @@ def plot_df(df:pd.DataFrame,
     pass
     # plt.close()
   return
+
 
 def get_losses(df:pd.DataFrame,
                dataPath:str,
