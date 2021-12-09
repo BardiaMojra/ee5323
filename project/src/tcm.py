@@ -10,26 +10,28 @@ from nbug import *
 
 class test_configuration(object):
   def __init__(self,
-               TEST_ID,
-               OUT_DIR,
-               OUT_DATA,
-               CONF_DIR,
-               output_labels,
-               all_friction,
-               cart_mass,
-               pend_1_length,
-               pend_1_mass,
-               pend_1_moment,
-               pend_2_length,
-               pend_2_mass,
-               pend_2_moment,
-               K,
-               Nbar):
+               TEST_ID:str,
+               OUT_DIR:str,
+               OUT_DATA:str,
+               CONF_DIR:str,
+               SIM_DUR:float,
+               output_labels:list,
+               all_friction:float,
+               cart_mass:float,
+               pend_1_length:float,
+               pend_1_mass:float,
+               pend_1_moment:float,
+               pend_2_length:float,
+               pend_2_mass:float,
+               pend_2_moment:float,
+               K:list,
+               Nbar:float):
     self.id = TEST_ID
     self.out_dir = OUT_DIR
     self.out_data = OUT_DATA
     self.data_path = OUT_DATA
     self.conf_dir = CONF_DIR
+    self.sim_dur = SIM_DUR
     self.conf_path = CONF_DIR+TEST_ID+'.config'
     self.loss_path = OUT_DIR+TEST_ID+'_losses.log'
     self.out_labels = output_labels

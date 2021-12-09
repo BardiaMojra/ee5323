@@ -106,12 +106,15 @@ def get_losses(df:pd.DataFrame,
     for i in range(len(df.index)):
       state_l1 = 0.0
       state_l2 = 0.0
-      for j in range(len(df.columns)):
+      nprint('row', i)
+      for j in range(len(['th_1', 'th_2'])):
         # st()
         l1 = abs(df.iloc[i,j])
         l2 = df.iloc[i,j] ** 2
-        state_l1 = l1
-        state_l2 = l2
+        nprint('l1, l2', l1, l2)
+        state_l1 += l1
+        state_l2 += l2
+      nprint('state_l1, state_l2', state_l1, state_l2)
       L1.append(state_l1)
       L2.append(state_l2)
     # concatenate

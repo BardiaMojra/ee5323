@@ -18,6 +18,7 @@ import numpy as np
 import os
 import pygame
 import pyglet
+from pyglet.window import key
 import pymunk
 import pymunk.constraints
 import pymunk.pygame_util
@@ -36,27 +37,26 @@ from nbug import *
 
 ''' TEST CONFIG
 '''
-TEST_ID = 'Test 001'
+TEST_ID = 'Test 004'
+SIM_DUR = 60.0 # in seconds
+OUT_DIR = '../out/'
+OUT_DATA = OUT_DIR+TEST_ID+'_data.csv'
+CONF_DIR = '../config/'
 # cart
 m_c = 0.5
 all_friction = 0.2
 '''   pendulum 1   '''
 l_1 = 0.6 # 6, 5, 4
-m_1 = 0.2 # 2, 3, 4 -- 1 -> stable
+m_1 = 0.4 # 2, 3, 4 -- 1 -> stable
 m_1_moment = 0.001
 m_1_radius = 0.05
-
 '''   pendulum 2  '''
 l_2 = 0.6 # 6, 5 -- 3 -> unstable
 m_2 = 0.2 # 2, 3, 4 -- 2 -> unstable
 m_2_moment = 0.001
 m_2_radius = 0.05
 # other config
-OUT_DIR = '../out/'
-CONF_DIR = '../config/'
-OUT_DATA = OUT_DIR+TEST_ID+'_data.csv'
 output_labels=['t', 'x', 'dx', 'th_1', 'dth_1', 'th_2', 'dth_2']
-output_header='t, x, dx, th_1, dth_1, th_2, dth_2\n'
 # control config
 # K gain matrix and Nbar found from modelling via Jupyter
 # K = [16.91887353, 21.12423935, 137.96378003, -3.20040325, -259.72220049,  -50.48383455]
@@ -69,21 +69,22 @@ K = [51.43763708,
      -88.73125241]
 Nbar = 51.5
 
-tConfig = tcm.test_configuration(TEST_ID,
-                                 OUT_DIR,
-                                 OUT_DATA,
-                                 CONF_DIR,
-                                 output_labels,
-                                 all_friction,
-                                 m_c,
-                                 l_1,
-                                 m_1,
-                                 m_1_moment,
-                                 l_2,
-                                 m_2,
-                                 m_2_moment,
-                                 K,
-                                 Nbar)
+tConfig = tcm.test_configuration(TEST_ID=TEST_ID,
+                                 OUT_DIR=OUT_DIR,
+                                 OUT_DATA=OUT_DATA,
+                                 CONF_DIR=CONF_DIR,
+                                 SIM_DUR=SIM_DUR,
+                                 output_labels=output_labels,
+                                 all_friction=all_friction,
+                                 cart_mass=m_c,
+                                 pend_1_length=l_1,
+                                 pend_1_mass=m_1,
+                                 pend_1_moment=m_1_moment,
+                                 pend_2_length=l_2,
+                                 pend_2_mass=m_2,
+                                 pend_2_moment=m_2_moment,
+                                 K=K,
+                                 Nbar=Nbar)
 
 # log test config
 tcm.pkl(tConfig)
@@ -190,6 +191,13 @@ labels = [label_x, label_th_1, label_th_2, label_force]
 if os.path.exists(OUT_DATA):
   os.remove(OUT_DATA)
 with open(OUT_DATA, 'w') as f:
+  output_header = str()
+  for i, s in enumerate(output_labels):
+    if i == 0:
+      output_header = s
+    else:
+      output_header += ', '+s
+  output_header += '\n'
   f.write(output_header)
   f.close()
 currtime = 0.0
@@ -257,7 +265,18 @@ def on_draw():
   for label in labels:
     label.draw()
 
+@window.event
+def on_key_press(symbol, modifiers):
+    # Symbolic names:
+    if symbol == key.ESCAPE:
+      window.close()
+
 def simulate(_):
+  global currtime
+  if currtime > SIM_DUR:
+      window.close()
+
+  # nprint('_',_)
   # ensure we get a consistent simulation step - ignore the input dt value
   dt = DT
   # simulate the world
@@ -272,7 +291,6 @@ def simulate(_):
   th_2v = pend_2_body.angular_velocity
   # dump our data so we can plot
   if record_data:
-    global currtime
     with open(OUT_DATA, 'a+') as f:
       f.write(f"{currtime:0.5f}, {posx:0.5f}, {velx:0.5f}, {th_1:0.5f}, {th_1v:0.5f}, {th_2:0.5f}, {th_2v:0.5f} \n")
       f.close()
