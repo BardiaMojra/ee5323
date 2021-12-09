@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib import cm
+# from matplotlib import cm
 # import seaborn as sns
 # sns.set()
 import os
@@ -102,19 +102,20 @@ def get_losses(df:pd.DataFrame,
                prt_en:bool=True):
     L1 = list()
     L2 = list()
-
-    for i in range(len(df.index)):
+    loss_df = df.iloc[:,[3,5]].copy()
+    for i in range(len(loss_df.index)):
       state_l1 = 0.0
       state_l2 = 0.0
-      nprint('row', i)
-      for j in range(len(['th_1', 'th_2'])):
-        # st()
-        l1 = abs(df.iloc[i,j])
-        l2 = df.iloc[i,j] ** 2
-        nprint('l1, l2', l1, l2)
+      # nprint('row', i)
+      # st()
+
+      for j in range(len(loss_df.columns)):
+        l1 = abs(180*loss_df.iloc[i,j]) # convert to degrees
+        l2 = (180*loss_df.iloc[i,j]) ** 2
+        # nprint('l1, l2', l1, l2)
         state_l1 += l1
         state_l2 += l2
-      nprint('state_l1, state_l2', state_l1, state_l2)
+      # nprint('state_l1, state_l2', state_l1, state_l2)
       L1.append(state_l1)
       L2.append(state_l2)
     # concatenate
