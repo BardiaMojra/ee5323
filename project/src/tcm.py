@@ -64,6 +64,12 @@ def unpkl(test_id:str, conf_dir:str):
     f.close()
   return test_config
 
+def unpkl_file(path:str):
+  with open(path, 'rb') as f:
+    test_config = pk.load(f)
+    f.close()
+  return test_config
+
 
 
 

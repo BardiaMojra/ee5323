@@ -37,8 +37,8 @@ from nbug import *
 
 ''' TEST CONFIG
 '''
-TEST_ID = 'Test 104'
-SIM_DUR = 100.0 # in seconds
+TEST_ID = 'Test 903'
+SIM_DUR = 30.0 # in seconds
 OUT_DIR = '../out/'
 OUT_DATA = OUT_DIR+TEST_ID+'_data.csv'
 CONF_DIR = '../config/'
@@ -46,13 +46,13 @@ CONF_DIR = '../config/'
 m_c = 0.5
 all_friction = 0.2
 '''   pendulum 1   '''
-l_1 = 0.6 # 6, 5, 4, 7 -- 4 ->
+l_1 = 0.4 # 6, 5, 4, 7 -- 4 ->
 m_1 = 0.2 # 2, 3, 4 -- 1 -> stable
-m_1_moment = 0.001
+m_1_moment = 0.01
 m_1_radius = 0.05
 '''   pendulum 2  '''
-l_2 = 0.6 # 6, 5, 7 -- 3 -> unstable
-m_2 = 0.2 # 2, 3, 4 -- 2 -> unstable
+l_2 = 0.7 # 6, 5, 7 -- 3 -> unstable
+m_2 = 0.3 # 2, 3, 4 -- 2 -> unstable
 m_2_moment = 0.001
 m_2_radius = 0.05
 # other config
