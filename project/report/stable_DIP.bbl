@@ -1,0 +1,34 @@
+\begin{thebibliography}{1}
+
+\bibitem{ibanez2005lyapunov}
+C.~A. Ibanez, O.~G. Frias, and M.~S. Castanon, ``Lyapunov-based controller for
+  the inverted pendulum cart system,'' {\em Nonlinear Dynamics}, vol.~40,
+  no.~4, pp.~367--374, 2005.
+
+\bibitem{optimalLQR}
+A.~Bogdanov, ``Optimal control of a double inverted pendulum on a cart,'' {\em
+  Oregon Health and Science University, Tech. Rep. CSE-04-006, OGI School of
+  Science and Engineering, Beaverton, OR}, 2004.
+
+\bibitem{dabretau2015control}
+T.~DABRETAU and A.~DAREINI, ``Control of double inverted pendulum first
+  approach,'' 2015.
+
+\bibitem{crowe2018control}
+I.~J. Crowe-Wright, ``Control theory: The double pendulum inverted on a cart,''
+  2018.
+
+\bibitem{mehedi2020three}
+I.~M. Mehedi, U.~Ansari, and U.~M. AL-Saggaf, ``Three degrees of freedom rotary
+  double inverted pendulum stabilization by using robust generalized dynamic
+  inversion control: Design and experiments,'' {\em Journal of Vibration and
+  Control}, vol.~26, no.~23-24, pp.~2174--2184, 2020.
+
+\bibitem{pymunk}
+V.~Blomqvist, ``Pymunk: A easy-to-use pythonic rigid body 2d physics library
+  (version 6.2.1),'' 2007.
+
+\bibitem{pygame}
+P.~Shinners, ``Pygame.'' \url{http://pygame.org/}, 2011.
+
+\end{thebibliography}
