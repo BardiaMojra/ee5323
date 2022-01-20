@@ -1,4 +1,4 @@
-%% exam02 - q01 - lyapunov qnalysis 
+%% exam02 - q01 - lyapunov analysis 
 % @author Bardia Mojra
 % @date 11/13/2021
 % @title  exam02 - q01 - lyapunov analysis 
